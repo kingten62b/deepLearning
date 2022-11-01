@@ -39,3 +39,7 @@ plt.ylabel('Y') #给纵坐标轴加标注
 str1 = str(a.data.numpy()[0]) + 'x +' + str(b.data.numpy()[0]) #将拟合直线的参数a、b显示出来
 plt.legend([xplot, yplot],['Data', str1]) #绘制图例
 plt.show() #将图形画出来
+
+'''输出并检验预测结果'''
+predictions = a.expand_as(x_test) * x_test + b.expand_as(x_test) #计算模型的预测结果
+predictions #输出
