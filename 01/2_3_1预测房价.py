@@ -11,8 +11,36 @@ x_test = x[-10 :]
 y_train = y[: -10]
 y_test = y[-10 :]
 
-plt.figure(figsize=(10,8)) #设定绘制窗口大小为10*8 inch
-#绘制数据，由于x和y都是自动微分变量，需要用data获取它们包裹的Tensor，并转成Numpy plt.plot(x_train.data.n
-plt.xlabel('X') #添加X轴的标注
-plt.ylabel('Y') #添加Y轴的标注
-plt.show() #画出图形
+# plt.figure(figsize=(10,8)) #设定绘制窗口大小为10*8 inch
+# plt.xlabel('X') #添加X轴的标注
+# plt.ylabel('Y') #添加Y轴的标注
+# plt.show() #画出图形
+
+a = torch.rand(1, requires_grad = True)
+b = torch.rand(1, requires_grad = True)
+learning_rate = 0.0001  #学习率
+for i in range(1000):
+    #计算在当前a、b条件下的模型预测数值
+    predictions = a.expand_as(x_train) * x_train + b.expand_as(x_train)
+    #将所有训练数据代入模型ax+b，计算每个的预测值。这里的x_train和predictions都是（90，1）的张量。
+    #Expand_as的作用是将a,b扩充维度到和x_train一致
+    loss = torch.mean((predictions - y_train) ** 2) #通过与标签数据y比较，计算误差，loss是一个标量
+    print('loss:', loss)
+    loss.backward() #对损失函数进行梯度反传
+    #利用上一步计算中得到的a的梯度信息更新a中的data数值
+    a.data.add_(- learning_rate * a.grad.data)
+    #利用上一步计算中得到的b的梯度信息更新b中的data数值
+    b.data.add_(- learning_rate * b.grad.data)
+    #增加这部分代码，清空存储在变量a、b中的梯度信息，以免在backward的过程中反复不停地累加
+    a.grad.data.zero_() #清空a的梯度数值
+    b.grad.data.zero_() #清空b的梯度数值
+
+x_data = x_train.data.numpy() #将x中的数据转换成NumPy数组
+plt.figure(figsize = (10, 7)) #定义绘图窗口
+xplot, = plt.plot(x_data, y_train.data.numpy(), 'o') #绘制x, y散点图
+yplot, = plt.plot(x_data, a.data.numpy() * x_data +b.data.numpy()) #绘制拟合直线图
+plt.xlabel('X') #给横坐标轴加标注
+plt.ylabel('Y') #给纵坐标轴加标注
+str1 = str(a.data.numpy()[0]) + 'x +' + str(b.data.numpy()[0]) #将拟合直线的参数a、b显示出来
+plt.legend([xplot, yplot],['Data', str1]) #绘制图例
+plt.show() #将图形画出来
