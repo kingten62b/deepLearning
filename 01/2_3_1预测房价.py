@@ -11,11 +11,6 @@ x_test = x[-10 :]
 y_train = y[: -10]
 y_test = y[-10 :]
 
-# plt.figure(figsize=(10,8)) #设定绘制窗口大小为10*8 inch
-# plt.xlabel('X') #添加X轴的标注
-# plt.ylabel('Y') #添加Y轴的标注
-# plt.show() #画出图形
-
 a = torch.rand(1, requires_grad = True)
 b = torch.rand(1, requires_grad = True)
 learning_rate = 0.0001  #学习率
