@@ -31,8 +31,7 @@ for i in range(1000):
     a.grad.data.zero_() #清空a的梯度数值
     b.grad.data.zero_() #清空b的梯度数值
 
-x_data = x_train.data.numpy() #将x中的数据转换成NumPy数组
-
+# x_data = x_train.data.numpy() #将x中的数据转换成NumPy数组
 # plt.figure(figsize = (10, 7)) #定义绘图窗口
 # xplot, = plt.plot(x_data, y_train.data.numpy(), 'o') #绘制x, y散点图
 # yplot, = plt.plot(x_data, a.data.numpy() * x_data +b.data.numpy()) #绘制拟合直线图
