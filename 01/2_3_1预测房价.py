@@ -58,6 +58,3 @@ plt.ylabel('Y') #更改纵坐标轴标注
 str1 = str(a.data.numpy()[0]) + 'x +' + str(b.data.numpy()[0]) #图例信息
 # plt.legend([xplot, yplot],['Data', str1]) #绘制图例
 plt.show()
-
-
-'''test'''
