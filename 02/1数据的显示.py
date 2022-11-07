@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 #让输出图形直接在Notebook中显示
 # %matplotlib inline
 
-data_path = 'hour.csv' #读取数据到内存，rides为一个dataframe对象
+data_path = 'D:/myproject/py/deepLearning/02/hour.csv' #读取数据到内存，rides为一个dataframe对象
 rides = pd.read_csv(data_path)
 rides.head() #输出部分数据
 counts = rides['cnt'][:50] #截取数据
@@ -16,6 +16,7 @@ plt.figure(figsize = (10, 7)) #设定绘图窗口大小
 plt.plot(x, y, 'o-') #绘制原始数据
 plt.xlabel('X') #更改坐标轴标注
 plt.ylabel('Y') #更改坐标轴标注
+plt.show()
 
 
 #输入变量，1,2,3,...这样的一维数组
@@ -62,3 +63,17 @@ for i in range(100000):
     biases.grad.data.zero_()
     weights2.grad.data.zero_()
 
+
+plt.plot(losses)
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+
+
+x_data = x.data.numpy() #获得x包裹的数据
+plt.figure(figsize = (10, 7)) #设定绘图窗口大小
+xplot, = plt.plot(x_data, y.data.numpy(), 'o') #绘制原始数据
+yplot, = plt.plot(x_data, predictions.data.numpy()) #绘制拟合数据
+plt.xlabel('X') #更改坐标轴标注
+plt.ylabel('Y') #更改坐标轴标注
+plt.legend([xplot, yplot],['Data', 'Prediction under 1000000 epochs']) #绘制图例
+plt.show()
