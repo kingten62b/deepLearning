@@ -20,7 +20,8 @@ plt.show()
 
 
 #输入变量，1,2,3,...这样的一维数组
-x = torch.FloatTensor(np.arange(len(counts), dtype = float))
+# x = torch.FloatTensor(np.arange(len(counts), dtype = float))
+x = torch.FloatTensor(np.arange(len(counts), dtype = float) / len(counts))  #将输入数据的范围做归一化处理
 #输出变量，它是从数据counts中读取的每一时刻的单车数，共50个数据点的一维数组，作为标准答案
 y = torch.FloatTensor(np.array(counts, dtype = float))
 sz = 10 #设置隐含层神经元的数量
