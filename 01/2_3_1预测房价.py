@@ -51,7 +51,7 @@ plt.figure(figsize = (10, 7)) #设定绘图窗口大小
 plt.plot(x_data, y_train.data.numpy(), 'o') #绘制训练数据
 plt.plot(x_pred, y_test.data.numpy(), 's') #绘制测试数据
 x_data = np.r_[x_data, x_test.data.numpy()]
-plt.plot(x_data, a.data.numpy() * x_data + b.data.numpy(),) #绘制拟合数据
+plt.plot(x_data, a.data.numpy() * x_data + b.data.numpy()) #绘制拟合数据
 plt.plot(x_pred, a.data.numpy() * x_pred + b.data.numpy(), 'o') #绘制预测数据
 plt.xlabel('X') #更改横坐标轴标注
 plt.ylabel('Y') #更改纵坐标轴标注
