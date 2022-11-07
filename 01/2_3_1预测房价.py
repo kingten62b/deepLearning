@@ -31,15 +31,15 @@ for i in range(1000):
     a.grad.data.zero_() #清空a的梯度数值
     b.grad.data.zero_() #清空b的梯度数值
 
-# x_data = x_train.data.numpy() #将x中的数据转换成NumPy数组
-# plt.figure(figsize = (10, 7)) #定义绘图窗口
-# xplot, = plt.plot(x_data, y_train.data.numpy(), 'o') #绘制x, y散点图
-# yplot, = plt.plot(x_data, a.data.numpy() * x_data +b.data.numpy()) #绘制拟合直线图
-# plt.xlabel('X') #给横坐标轴加标注
-# plt.ylabel('Y') #给纵坐标轴加标注
-# str1 = str(a.data.numpy()[0]) + 'x +' + str(b.data.numpy()[0]) #将拟合直线的参数a、b显示出来
-# plt.legend([xplot, yplot],['Data', str1]) #绘制图例
-# plt.show() #将图形画出来
+x_data = x_train.data.numpy() #将x中的数据转换成NumPy数组
+plt.figure(figsize = (10, 7)) #定义绘图窗口
+xplot, = plt.plot(x_data, y_train.data.numpy(), 'o') #绘制x, y散点图
+yplot, = plt.plot(x_data, a.data.numpy() * x_data +b.data.numpy()) #绘制拟合直线图
+plt.xlabel('X') #给横坐标轴加标注
+plt.ylabel('Y') #给纵坐标轴加标注
+str1 = str(a.data.numpy()[0]) + 'x +' + str(b.data.numpy()[0]) #将拟合直线的参数a、b显示出来
+plt.legend([xplot, yplot],['Data', str1]) #绘制图例
+plt.show() #将图形画出来
 
 '''输出并检验预测结果'''
 predictions = a.expand_as(x_test) * x_test + b.expand_as(x_test) #计算模型的预测结果
@@ -51,7 +51,7 @@ plt.figure(figsize = (10, 7)) #设定绘图窗口大小
 plt.plot(x_data, y_train.data.numpy(), 'o') #绘制训练数据
 plt.plot(x_pred, y_test.data.numpy(), 's') #绘制测试数据
 x_data = np.r_[x_data, x_test.data.numpy()]
-plt.plot(x_data, a.data.numpy() * x_data + b.data.numpy()) #绘制拟合数据
+plt.plot(x_data, a.data.numpy() * x_data + b.data.numpy(),) #绘制拟合数据
 plt.plot(x_pred, a.data.numpy() * x_pred + b.data.numpy(), 'o') #绘制预测数据
 plt.xlabel('X') #更改横坐标轴标注
 plt.ylabel('Y') #更改纵坐标轴标注
