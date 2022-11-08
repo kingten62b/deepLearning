@@ -85,7 +85,7 @@ x = torch.FloatTensor((np.arange(len(counts_predict), dtype = float) + len(count
 #读取后面50个点的y数值，不需要做归一化
 y = torch.FloatTensor(np.array(counts_predict, dtype = float))
 #用x预测y
-hidden = x.expand(sz, len(x)).t() * weights.expand(len(x), sz) #从输入层到隐含层的计算
+hidden = x.expand(sz, len(x)).t() * weights.expand(len(x), sz) + biases #从输入层到隐含层的计算
 hidden = torch.sigmoid(hidden) #将sigmoid函数作用在隐含层的每一个神经元上
 predictions = hidden.mm(weights2) #从隐含层输出到输出层，计算得到最终预测
 loss = torch.mean((predictions - y) ** 2) #计算预测数据上的损失函数
