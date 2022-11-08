@@ -75,7 +75,7 @@ for i in range(1000):
         yy = torch.FloatTensor(Y[start:end])
         predict = neu(xx)
         loss = cost(predict, yy)
-        optimizer.zero_grad()
+        optimizer.zero_grad()   #梯度清除
         loss.backward()
         optimizer.step()
         batch_loss.append(loss.data.numpy())
@@ -158,3 +158,13 @@ dates = pd.to_datetime(rides.loc[subset.index]['dteday'])
 dates = dates.apply(lambda d: d.strftime('%b %d'))
 ax.set_xticks(np.arange(len(dates))[12::24])
 _ = ax.set_xticklabels(dates[12::24], rotation=45)
+plt.show()
+
+
+#找到与峰值对应的神经元，将其到输入层的权重输出
+dic = dict(neu.named_parameters())
+weights = dic['0.weight']
+plt.plot(weights.data.numpy()[4, :],'o-')
+plt.xlabel('Input Neurons')
+plt.ylabel('Weight')
+plt.show()
