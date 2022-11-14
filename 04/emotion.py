@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 # %matplotlib inline
 
-
+#------------------ 数据处理----------------------
 #数据来源文件
 good_file = '04/data/good.txt'
 bad_file = '04/data/bad.txt'
@@ -69,3 +69,42 @@ def index2word(index, diction):
         if v[0] == index:
             return(w)
     return(None)
+
+
+#---------------文本数据向量化---------------
+#输入一个句子和相应的词典，得到这个句子的向量化表示
+#向量的尺寸为词典中词汇的个数，i位置上面的数值为第i个单词在sentence中出现的频率
+def sentence2vec(sentence, dictionary):
+    vector = np.zeros(len(dictionary))
+    for l in sentence:
+        vector[l] += 1
+    return(1.0 * vector / len(sentence))
+#遍历所有句子，将每一个词映射成编码
+dataset = [] #数据集
+labels = [] #标签
+sentences = [] #原始句子，调试用
+#处理正向评论
+for sentence in pos_sentences:
+    new_sentence = []
+    for l in sentence:
+        if l in diction:
+            new_sentence.append(word2index(l, diction))
+    dataset.append(sentence2vec(new_sentence, diction))
+    labels.append(0) #正标签为0
+    sentences.append(sentence)
+#处理负向评论
+for sentence in neg_sentences:
+    new_sentence = []
+    for l in sentence:
+        if l in diction:
+            new_sentence.append(word2index(l, diction))
+    dataset.append(sentence2vec(new_sentence, diction))
+    labels.append(1) #负标签为1
+    sentences.append(sentence)
+#打乱所有的数据顺序，形成数据集
+#indices为所有数据下标的全排列
+indices = np.random.permutation(len(dataset))
+#根据打乱的下标，重新生成数据集dataset、标签集labels，以及对应的原始句子sentences
+dataset = [dataset[i] for i in indices]
+labels = [labels[i] for i in indices]
+sentences = [sentences[i] for i in indices]
