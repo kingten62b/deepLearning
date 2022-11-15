@@ -13,8 +13,10 @@ import numpy as np
 
 #------------------ 数据处理----------------------
 #数据来源文件
-good_file = '04/data/good.txt'
-bad_file = '04/data/bad.txt'
+good_file = 'D:/myproject/py/deepLearning/04/data/good.txt'
+bad_file = 'D:/myproject/py/deepLearning/04/data/bad.txt'
+# good_file = '04/data/good.txt'
+# bad_file = '04/data/bad.txt'
 #将文本中的标点符号过滤掉
 def filter_punc(sentence):
     sentence = re.sub("[\s+\.\!\/_,$%^*(+\"\'“”《》?“]+|[+——！，。？、~@#￥%……&*（）：]+", "", sentence)
@@ -193,12 +195,12 @@ y_val_losses = y[:,1]
 y_right_ratio = y[:,2]
 x = np.arange(len(y_TrainLoss))
 plt.figure(figsize = (10, 7)) #设定绘图窗口大小
-plot0, = plt.plot(x, y_TrainLoss) #绘制
-plot1, = plt.plot(x, y_val_losses) #绘制
-plot2, = plt.plot(x, y_right_ratio) #绘制
+line0, = plt.plot(x, y_TrainLoss) #绘制
+line1, = plt.plot(x, y_val_losses) #绘制
+line2, = plt.plot(x, y_right_ratio) #绘制
 plt.xlabel('septs') #更改坐标轴标注
 plt.ylabel('loss&accuracy') #更改坐标轴标注
-plt.legend([plot0,plot1,plot2],['Train Loss','Valid Losses','valid Accuracy']) #绘制图例
+plt.legend([line0, line1, line2],['Train Loss','Valid Losses','valid Accuracy']) #绘制图例
 plt.show()
 
 
