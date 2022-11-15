@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 #让输出图形直接在Notebook中显示
 # %matplotlib inline
 
-data_path = 'D:/myproject/py/deepLearning/02/hour.csv' #读取数据到内存，rides为一个dataframe对象
+data_path = 'D:/myproject/py/deepLearning/03/hour.csv' #读取数据到内存，rides为一个dataframe对象
 rides = pd.read_csv(data_path)
 
 
