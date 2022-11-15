@@ -108,3 +108,14 @@ indices = np.random.permutation(len(dataset))
 dataset = [dataset[i] for i in indices]
 labels = [labels[i] for i in indices]
 sentences = [sentences[i] for i in indices]
+
+
+#---------------划分测试集、训练集----------------
+#将整个数据集划分为训练集、校验集和测试集，其中校验集和测试集的长度都是整个数据集的十分之一
+test_size = int(len(dataset)//10)
+train_data = dataset[2 * test_size :]
+train_label = labels[2 * test_size :]
+valid_data = dataset[: test_size]
+valid_label = labels[: test_size]
+test_data = dataset[test_size : 2 * test_size]
+test_label = labels[test_size : 2 * test_size]
