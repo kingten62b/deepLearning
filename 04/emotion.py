@@ -70,7 +70,6 @@ def index2word(index, diction):
             return(w)
     return(None)
 
-
 #---------------文本数据向量化---------------
 #输入一个句子和相应的词典，得到这个句子的向量化表示
 #向量的尺寸为词典中词汇的个数，i位置上面的数值为第i个单词在sentence中出现的频率
@@ -109,7 +108,6 @@ dataset = [dataset[i] for i in indices]
 labels = [labels[i] for i in indices]
 sentences = [sentences[i] for i in indices]
 
-
 #---------------划分测试集、训练集----------------
 #将整个数据集划分为训练集、校验集和测试集，其中校验集和测试集的长度都是整个数据集的十分之一
 test_size = int(len(dataset)//10)
@@ -119,3 +117,14 @@ valid_data = dataset[: test_size]
 valid_label = labels[: test_size]
 test_data = dataset[test_size : 2 * test_size]
 test_label = labels[test_size : 2 * test_size]
+
+# --------------建立神经网络--------------------
+#一个简单的前馈神经网络，共3层
+#第一层为线性层，加一个非线性ReLU，第二层为线性层，中间有10个隐含层神经元
+#输入维度为词典的大小：每一段评论的词袋模型
+model = nn.Sequential(
+    nn.Linear(len(diction), 10),
+    nn.ReLU(),
+    nn.Linear(10, 2),
+    nn.LogSoftmax(dim=1),
+)
