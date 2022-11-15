@@ -128,3 +128,60 @@ model = nn.Sequential(
     nn.Linear(10, 2),
     nn.LogSoftmax(dim=1),
 )
+#自定义的计算一组数据分类准确度的函数
+#predictions为模型给出的预测结果，labels为数据中的标签。比较二者以确定整个神经网络当前的表现
+def rightness(predictions, labels):
+    '''计算预测错误率的函数，其中predictions是模型给出的一组预测结果，batch_size行num_classes列的矩阵，labels是数据中的正确答案'''
+    #对于任意一行（一个样本）的输出值的第1个维度求最大，得到每一行最大元素的下标
+    pred = torch.max(predictions.data, 1)[1]
+    #将下标与labels中包含的类别进行比较，并累计得到比较正确的数量
+    rights = pred.eq(labels.data.view_as(pred)).sum()
+    return rights, len(labels) #返回正确的数量和这一次一共比较了多少元素
+
+#损失函数为交叉熵
+cost = torch.nn.NLLLoss()
+#优化算法为SGD，可以自动调节学习率
+optimizer = torch.optim.SGD(model.parameters(), lr = 0.01)
+records = []
+#循环10个epoch
+losses = []
+for epoch in range(10):
+    for i, data in enumerate(zip(train_data, train_label)):
+        x, y = data
+        #将输入的数据进行适当的变形，主要是要多出一个batch_size的维度，即第一个为1的维度
+        x = torch.tensor(x,requires_grad = True, dtype = torch.float).view(1,-1) #x的尺寸：batch_size=1, len_dictionary
+        #标签也要加一层外衣以变成1*1的张量
+        y = torch.tensor(np.array([y]), dtype = torch.long)
+        #y的尺寸：batch_size=1, 1
+        #清空梯度
+        optimizer.zero_grad()
+        #模型预测
+        predict = model(x)
+        #计算损失函数
+        loss = cost(predict, y)
+        #将损失函数数值加入列表中
+        losses.append(loss.data.numpy())
+        #开始进行梯度反传
+        loss.backward()
+        #开始对参数进行一步优化
+        optimizer.step()
+        #每隔3000步，跑一下校验集的数据，输出临时结果
+        if i % 3000 == 0:
+            val_losses = []
+            rights = []
+            #在所有校验集上实验
+            for j, val in enumerate(zip(valid_data, valid_label)):
+                x, y = val
+                x = torch.tensor(x, requires_grad = True, dtype = torch.float).view(1,-1)
+                y = torch.tensor(np.array([y]), dtype = torch.long)
+                predict = model(x)
+                #调用rightness函数计算准确度
+                right = rightness(predict, y)
+                rights.append(right)
+                loss = cost(predict, y)
+                val_losses.append(loss.data.numpy())
+            #将校验集上的平均准确度计算出来
+            right_ratio = 1.0 * np.sum([i[0] for i in rights]) / np.sum([i[1] for i in rights])
+            print('第{}轮，训练损失：{:.2f}，校验损失：{:.2f}，校验准确率：{:.2f}'.format(epoch,
+                np.mean(losses), np.mean(val_losses), right_ratio))
+            records.append([np.mean(losses), np.mean(val_losses), right_ratio])
