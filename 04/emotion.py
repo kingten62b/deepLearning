@@ -185,3 +185,33 @@ for epoch in range(10):
             print('第{}轮，训练损失：{:.2f}，校验损失：{:.2f}，校验准确率：{:.2f}'.format(epoch,
                 np.mean(losses), np.mean(val_losses), right_ratio))
             records.append([np.mean(losses), np.mean(val_losses), right_ratio])
+
+
+y = np.array(records)
+y_TrainLoss = y[:,0]
+y_val_losses = y[:,1]
+y_right_ratio = y[:,2]
+x = np.arange(len(y_TrainLoss))
+plt.figure(figsize = (10, 7)) #设定绘图窗口大小
+plot0, = plt.plot(x, y_TrainLoss) #绘制
+plot1, = plt.plot(x, y_val_losses) #绘制
+plot2, = plt.plot(x, y_right_ratio) #绘制
+plt.xlabel('septs') #更改坐标轴标注
+plt.ylabel('loss&accuracy') #更改坐标轴标注
+plt.legend([plot0,plot1,plot2],['Train Loss','Valid Losses','valid Accuracy']) #绘制图例
+plt.show()
+
+
+
+#在测试集上分批运行，并计算总的正确率
+vals = [] #记录准确率所用列表
+#对测试数据集进行循环
+for data, target in zip(test_data, test_label):
+    data, target =torch.tensor(data, dtype = torch.float).view(1,-1), torch.tensor(np.array([target]), dtype = torch.long)
+    output = model(data) #将特征数据输入网络，得到分类的输出
+    val = rightness(output, target) #获得正确样本数以及总样本数
+    vals.append(val) #记录结果
+#计算准确率
+rights = (sum([tup[0] for tup in vals]), sum([tup[1] for tup in vals]))
+right_rate = 1.0 * rights[0].data.numpy() / rights[1]
+
