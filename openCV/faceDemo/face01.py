@@ -6,16 +6,21 @@ def catch_video(tag, window_name='catch face', camera_idx=0):
     """ catch_video 获取摄像头的视频流
 
     :param tag: 标签(人脸名)
-    :param window_name: 窗口名
+    :param window_name: 窗口名称
     :param camera_idx: 摄像头
     :return None
     """
     cv2.namedWindow(window_name)
     # 设置摄像头
     cap = cv2.VideoCapture(camera_idx)
-    while cap.isOpened():
+    # 检查摄像头是否启动
+    if not cap.isOpened():
+        print("无法启动摄像头")
+        exit()
+    while True:
         # 逐帧捕获
         ok, frame = cap.read()
+        # 如果正确读取帧,ok为True
         if not ok:
             break
         # 抓取人脸
@@ -29,7 +34,12 @@ def catch_video(tag, window_name='catch face', camera_idx=0):
     cap.release()
     cv2.destroyAllWindows()
 
+
 def catch_face(frame, tag):
+    """ catch_face 抓取人脸
+
+    :param frame: 标签(人脸名)
+    """
     # 使用人脸识别分类器
     classfier = cv2.CascadeClassifier("openCV/faceDemo/cv2data/haarcascade_frontalface_alt2.xml")
     # 人脸边框的颜色
@@ -67,5 +77,4 @@ def catch_face(frame, tag):
 # DATA_MODEL = os.path.join(PROJECT_PATH, "data/model")
 
 if __name__ == '__main__':
-    print(catch_video.__doc__)
     catch_video("liu")
