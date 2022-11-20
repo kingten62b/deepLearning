@@ -26,7 +26,7 @@ def catch_face(frame, tag):
     classfier = cv2.CascadeClassifier("openCV/faceDemo/cv2data/haarcascade_frontalface_alt2.xml")
     # 人脸边框的颜色
     color = (0, 255, 0)
-    # 将当前帧转换成灰度图像
+    # 将当前帧转换成灰度图像,方便识别
     grey = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)    
     # 人脸检测，1.2和2分别为图片缩放比例和需要检测的有效点数
     face_rects = classfier.detectMultiScale(grey, scaleFactor=1.2, minNeighbors=3, minSize=(32, 32))
