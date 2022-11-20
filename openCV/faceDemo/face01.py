@@ -53,7 +53,6 @@ def catch_face(frame, tag):
     # scaleFactor--表示在前后两次相继的扫描中，搜索窗口的比例系数。默认为1.1即每次搜索窗口依次扩大10%;
     # minNeighbors--表示构成检测目标的相邻矩形的最小个数(默认为3个);
     # minSize和maxSize用来限制得到的目标区域的范围
-    # face_rects = classfier.detectMultiScale(grey, scaleFactor=1.2, minNeighbors=3, minSize=(32, 32))
     face_rects = classfier.detectMultiScale(grey, scaleFactor=1.2, minNeighbors=3, minSize=(32, 32))
     num = 1
     if len(face_rects) > 0: # 大于0则检测到人脸
@@ -62,7 +61,7 @@ def catch_face(frame, tag):
             x, y, w, h = face_rects
             image = frame[y - 10:y + h + 10, x - 10:x + w + 10]
             # 保存人脸图像
-            save_face(image, tag, num)
+            # save_face(image, tag, num)
             # 绘制人脸边框
             cv2.rectangle(frame, (x - 10, y - 10), (x + w + 10, y + h + 10), color, 2)
             num += 1
