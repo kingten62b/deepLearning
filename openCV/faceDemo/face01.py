@@ -1,5 +1,6 @@
 import cv2
 import os
+import time
 
 
 def catch_video(tag, window_name='catch face', camera_idx=0):
@@ -59,29 +60,30 @@ def catch_face(frame, tag):
         # 图片帧中有多个图片，框出每一个人脸
         for face_rects in face_rects:
             x, y, w, h = face_rects
-            # image = frame[y - 10:y + h + 10, x - 10:x + w + 10]
+            image = frame[y - 10:y + h + 10, x - 10:x + w + 10]
             # 保存人脸图像
-            # save_face(image, tag, num)
+            save_face(image, tag, num)
             # 绘制人脸边框
             cv2.rectangle(frame, (x - 10, y - 10), (x + w + 10, y + h + 10), color, 2)
             num += 1
 
-# def save_face(image, tag, num):
-#   # DATA_TRAIN为抓取的人脸存放目录，如果目录不存在则创建
-#     makedir_exist_ok(os.path.join(DATA_TRAIN, str(tag)))
-#     img_name = os.path.join(DATA_TRAIN, str(tag), '{}_{}.jpg'.format(int(time.time()), num))
-#     # 保存人脸图像到指定的位置, 其中会创建一个tag对应的目录，用于后面的分类训练
-#     cv2.imwrite(img_name, image)
+def save_face(image, tag, num):
+    # DATA_TRAIN为抓取的人脸存放目录，如果目录不存在则创建
+    os.makedirs(os.path.join(DATA_TRAIN, str(tag)), exist_ok=True)
+    # 图片文件名
+    img_name = os.path.join(DATA_TRAIN, str(tag), '{}_{}.jpg'.format(int(time.time()), num))
+    # 保存人脸图像到指定的位置
+    cv2.imwrite(img_name, image)
 
-# PROJECT_PATH = os.path.abspath(
-#     os.path.join(os.path.abspath(os.path.dirname(__file__)), os.pardir))
+PROJECT_PATH = os.path.abspath(
+    os.path.join(os.path.abspath(os.path.dirname(__file__)), os.pardir))
 
-# # 训练数据集
-# DATA_TRAIN = os.path.join(PROJECT_PATH, "data/train")
-# # 验证数据集
-# DATA_TEST = os.path.join(PROJECT_PATH, "data/test")
-# # 模型保存地址
-# DATA_MODEL = os.path.join(PROJECT_PATH, "data/model")
+# 训练数据集
+DATA_TRAIN = os.path.join(PROJECT_PATH, "data/train")
+# 验证数据集
+DATA_TEST = os.path.join(PROJECT_PATH, "data/test")
+# 模型保存地址
+DATA_MODEL = os.path.join(PROJECT_PATH, "data/model")
 
 if __name__ == '__main__':
     catch_video("liu")
