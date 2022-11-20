@@ -12,10 +12,10 @@ def catch_video(tag, window_name='catch face', camera_idx=0):
             break
         # 抓取人脸
         catch_face(frame, tag)
-        # 输入'q'退出程序
+        # 显示结果帧e
         cv2.imshow(window_name, frame)
-        c = cv2.waitKey(1)
-        if c & 0xFF == ord('q'):
+        # 输入'q'退出程序
+        if cv2.waitKey(10) == ord('q'):
             break
   # 释放摄像头并销毁所有窗口
     cap.release()
