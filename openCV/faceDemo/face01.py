@@ -22,7 +22,7 @@ def catch_video(tag, window_name='catch face', camera_idx=0):
     cv2.destroyAllWindows()
 
 def catch_face(frame, tag):
-    # 告诉OpenCV使用人脸识别分类器
+    # 使用人脸识别分类器
     classfier = cv2.CascadeClassifier("openCV/faceDemo/cv2data/haarcascade_frontalface_alt2.xml")
     # 人脸边框的颜色
     color = (0, 255, 0)
