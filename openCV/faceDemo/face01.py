@@ -3,7 +3,7 @@ import os
 
 def catch_video(tag, window_name='catch face', camera_idx=0):
     cv2.namedWindow(window_name)
-    # 摄像头
+    # 设置摄像头
     cap = cv2.VideoCapture(camera_idx)
     while cap.isOpened():
         # 逐帧捕获
