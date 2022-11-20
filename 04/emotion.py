@@ -26,7 +26,7 @@ def Prepare_data(good_file, bad_file, is_filter = True):
     all_words = [] #存储所有的单词
     pos_sentences = [] #存储正向的评论
     neg_sentences = [] #存储负向的评论
-    with open(good_file, 'r', encoding='utf-8') as fr:
+    with open(good_file, 'r', encoding='utf-8') as fr: #打开文件，用于文件的读写操作，省去了关闭文件的麻烦。
         for idx, line in enumerate(fr):
             if is_filter:
                 #过滤标点符号
@@ -49,7 +49,7 @@ def Prepare_data(good_file, bad_file, is_filter = True):
     print('{0} 包含 {1} 行，{2} 个词.'.format(bad_file, idx+1, len(all_words)-count))
     #建立词典，diction的每一项为{w:[id, 单词出现次数]}
     diction = {}
-    cnt = Counter(all_words)
+    cnt = Counter(all_words) #计算出字符串或者列表等中不同元素出现的个数，返回值可以理解为一个字典
     for word, freq in cnt.items():
         diction[word] = [len(diction), freq]
     print('字典大小：{}'.format(len(diction)))
@@ -216,4 +216,5 @@ for data, target in zip(test_data, test_label):
 #计算准确率
 rights = (sum([tup[0] for tup in vals]), sum([tup[1] for tup in vals]))
 right_rate = 1.0 * rights[0].data.numpy() / rights[1]
+print("准确率",right_rate)
 
