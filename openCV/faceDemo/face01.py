@@ -1,7 +1,15 @@
 import cv2
 import os
 
+
 def catch_video(tag, window_name='catch face', camera_idx=0):
+    """ catch_video 获取摄像头的视频流
+
+    :param tag: 标签(人脸名)
+    :param window_name: 窗口名
+    :param camera_idx: 摄像头
+    :return None
+    """
     cv2.namedWindow(window_name)
     # 设置摄像头
     cap = cv2.VideoCapture(camera_idx)
@@ -59,4 +67,5 @@ def catch_face(frame, tag):
 # DATA_MODEL = os.path.join(PROJECT_PATH, "data/model")
 
 if __name__ == '__main__':
+    print(catch_video.__doc__)
     catch_video("liu")
