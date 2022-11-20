@@ -25,7 +25,7 @@ def catch_video(tag, window_name='catch face', camera_idx=0):
 def catch_face(frame, tag):
     # 告诉OpenCV使用人脸识别分类器
     classfier = cv2.CascadeClassifier("openCV/faceDemo/cv2data/haarcascade_frontalface_alt2.xml")
-    # 识别出人脸后要画的边框的颜色，RGB格式
+    # 人脸边框的颜色
     color = (0, 255, 0)
     # 将当前帧转换成灰度图像
     grey = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)    
