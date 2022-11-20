@@ -3,7 +3,7 @@ import os
 
 
 def catch_video(tag, window_name='catch face', camera_idx=0):
-    """ catch_video 获取摄像头的视频流
+    """ catch_video 获取来自摄像头的视频流
 
     :param tag: 标签(人脸名)
     :param window_name: 窗口名称
@@ -23,7 +23,7 @@ def catch_video(tag, window_name='catch face', camera_idx=0):
         # 如果正确读取帧,ok为True
         if not ok:
             break
-        # 抓取人脸
+        # 人脸检测
         catch_face(frame, tag)
         # 显示结果帧e
         cv2.imshow(window_name, frame)
@@ -36,18 +36,21 @@ def catch_video(tag, window_name='catch face', camera_idx=0):
 
 
 def catch_face(frame, tag):
-    """ catch_face 抓取人脸
+    """ catch_face 人脸检测,添加边框
 
-    :param frame: 标签(人脸名)
+    :param frame: 需要检测人脸的帧
+    :param tag: 标签(人脸名)
+    :return None
     """
-    # 使用人脸识别分类器
+    # 使用openCV人脸识别分类器
     classfier = cv2.CascadeClassifier("openCV/faceDemo/cv2data/haarcascade_frontalface_alt2.xml")
     # 人脸边框的颜色
     color = (0, 255, 0)
     # 将当前帧转换成灰度图像,方便识别
     grey = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)    
     # 人脸检测，1.2和2分别为图片缩放比例和需要检测的有效点数
-    face_rects = classfier.detectMultiScale(grey, scaleFactor=1.2, minNeighbors=3, minSize=(32, 32))
+    # face_rects = classfier.detectMultiScale(grey, scaleFactor=1.2, minNeighbors=3, minSize=(32, 32))
+    face_rects = classfier.detectMultiScale(grey, scaleFactor=1.2, minNeighbors=3)
     num = 1
     if len(face_rects) > 0: # 大于0则检测到人脸
         # 图片帧中有多个图片，框出每一个人脸
