@@ -124,8 +124,16 @@ test_label = labels[test_size : 2 * test_size]
 #一个简单的前馈神经网络，共3层
 #第一层为线性层，加一个非线性ReLU，第二层为线性层，中间有10个隐含层神经元
 #输入维度为词典的大小：每一段评论的词袋模型
+# model = nn.Sequential(
+#     nn.Linear(len(diction), 10),
+#     nn.ReLU(),
+#     nn.Linear(10, 2),
+#     nn.LogSoftmax(dim=1),
+# )
 model = nn.Sequential(
     nn.Linear(len(diction), 10),
+    nn.ReLU(),
+    nn.Linear(10, 10),
     nn.ReLU(),
     nn.Linear(10, 2),
     nn.LogSoftmax(dim=1),

@@ -85,4 +85,4 @@ DATA_TEST = os.path.join(PROJECT_PATH, "data/test")
 DATA_MODEL = os.path.join(PROJECT_PATH, "data/model")
 
 if __name__ == '__main__':
-    catch_video("liu")
+    catch_video("liu_jia_tai")
