@@ -8,11 +8,12 @@ def catch_video(tag, window_name='catch face', camera_idx=0):
 
     :param tag: 标签(人脸名)
     :param window_name: 窗口名称
-    :param camera_idx: 摄像头
+    :param camera_idx: 摄像头编号;从文件播放视频时,用视频文件名替换摄像机索引
     :return None
     """
     cv2.namedWindow(window_name)
     # 设置摄像头
+    print(camera_idx)
     cap = cv2.VideoCapture(camera_idx)
     # 检查摄像头是否启动
     if not cap.isOpened():
@@ -37,7 +38,7 @@ def catch_video(tag, window_name='catch face', camera_idx=0):
 
 
 def catch_face(frame, tag):
-    """ catch_face 人脸检测,添加边框
+    """ catch_face 人脸检测,添加边框,并保存人脸图片
 
     :param frame: 需要检测人脸的帧
     :param tag: 标签(人脸名)
@@ -61,7 +62,7 @@ def catch_face(frame, tag):
             x, y, w, h = face_rects
             image = frame[y - 10:y + h + 10, x - 10:x + w + 10]
             # 保存人脸图像
-            save_face(image, tag, num)
+            # save_face(image, tag, num)
             # 绘制人脸边框
             cv2.rectangle(frame, (x - 10, y - 10), (x + w + 10, y + h + 10), color, 2)
             num += 1
@@ -86,4 +87,5 @@ DATA_TEST = os.path.join(PROJECT_PATH, "data/test")
 DATA_MODEL = os.path.join(PROJECT_PATH, "data/model")
 
 if __name__ == '__main__':
-    catch_video("wu_jing")
+    # catch_video("wu_jing")
+    catch_video(tag="liu_jia_tai",camera_idx="F:/t3856/Pictures/Camera Roll/liu01.mp4")
