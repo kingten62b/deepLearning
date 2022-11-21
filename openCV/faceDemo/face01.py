@@ -61,7 +61,7 @@ def catch_face(frame, tag):
             x, y, w, h = face_rects
             image = frame[y - 10:y + h + 10, x - 10:x + w + 10]
             # 保存人脸图像
-            # save_face(image, tag, num)
+            save_face(image, tag, num)
             # 绘制人脸边框
             cv2.rectangle(frame, (x - 10, y - 10), (x + w + 10, y + h + 10), color, 2)
             num += 1
@@ -74,6 +74,7 @@ def save_face(image, tag, num):
     # 保存人脸图像到指定的位置
     cv2.imwrite(img_name, image)
 
+# 工作区文件夹路径
 PROJECT_PATH = os.path.abspath(
     os.path.join(os.path.abspath(os.path.dirname(__file__)), os.pardir))
 
@@ -85,4 +86,4 @@ DATA_TEST = os.path.join(PROJECT_PATH, "data/test")
 DATA_MODEL = os.path.join(PROJECT_PATH, "data/model")
 
 if __name__ == '__main__':
-    catch_video("liu_jia_tai")
+    catch_video("wu_jing")
