@@ -12,6 +12,15 @@ import numpy as np
 # %matplotlib inline
 
 
+def rightness(predictions, labels):
+    '''计算预测错误率的函数,其中predictions是模型给出的一组预测结果,batch_size行num_classes列的矩阵,labels是数据中的正确答案'''
+    #对于任意一行（一个样本）的输出值的第1个维度求最大，得到每一行最大元素的下标
+    pred = torch.max(predictions.data, 1)[1]
+    #将下标与labels中包含的类别进行比较，并累计得到比较正确的数量
+    rights = pred.eq(labels.data.view_as(pred)).sum()
+    return rights, len(labels) #返回正确的数量和这一次一共比较了多少元素
+
+
 """5.2.1 数据准备"""
 image_size = 28 #图像的总尺寸为28×28
 num_classes = 10 #标签的种类数
@@ -151,7 +160,7 @@ for epoch in range(num_epochs):
             val_rights = [] #记录校验数据集准确率的容器
             #开始在校验集上做循环，计算校验集上的准确度
             for (data, target) in validation_loader:
-                data, target = data.clone().requires_grad_(True), target.clone.detach()
+                data, target = data.clone().requires_grad_(True), target.clone().detach()
                 #完成一次前馈计算过程，得到目前训练得到的模型net在校验集上的表现
                 output = net(data)
                 #计算准确率所需数值，返回正确的数值为（正确样例数，总样本数）
@@ -180,18 +189,18 @@ for epoch in range(num_epochs):
 
 
 
-"""gpu"""
-#建立布尔变量，判断是否可以用GPU
-use_cuda = torch.cuda.is_available()
-#如果可以用GPU，则设定Tensor的变量类型支持GPU
-dtype = torch.cuda.FloatTensor if use_cuda else torch.FloatTensor
-itype = torch.cuda.LongTensor if use_cuda else torch.LongTensor
-#如果存在GPU，就将网络加载到GPU上
-net = net.cuda() if use_cuda else net
-#将数据复制出来，然后加载到GPU上
-data, target = data.clone().detach().requires_grad(True),target.clone().detach()
-if use_cuda:
-    data, target = data.cuda(), target.cuda()
+# """gpu"""
+# #建立布尔变量，判断是否可以用GPU
+# use_cuda = torch.cuda.is_available()
+# #如果可以用GPU，则设定Tensor的变量类型支持GPU
+# dtype = torch.cuda.FloatTensor if use_cuda else torch.FloatTensor
+# itype = torch.cuda.LongTensor if use_cuda else torch.LongTensor
+# #如果存在GPU，就将网络加载到GPU上
+# net = net.cuda() if use_cuda else net
+# #将数据复制出来，然后加载到GPU上
+# data, target = data.clone().detach().requires_grad(True),target.clone().detach()
+# if use_cuda:
+#     data, target = data.cuda(), target.cuda()
 
 """5.2.4 测试模型"""
 #在测试集上分批运行，并计算总的正确率
