@@ -68,16 +68,16 @@ test_loader = torch.utils.data.DataLoader(  dataset=test_dataset,
                                             shuffle= False,
                                             sampler = sampler_test
                                             )
-#随便从数据集中读入一张图片，并绘制出来
-idx = 100
-#dataset支持下标索引，其中提取出来的元素为features、target格式，即属性和标签。[0]表示索引features
-muteimg = train_dataset[idx][0].numpy()
-#一般的图像包含RGB这3个通道，而MNIST数据集的图像都是灰度的，只有一个通道
-#因此，我们忽略通道，把图像看作一个灰度矩阵
-#用imshow画图，会将灰度矩阵自动展现为彩色，不同灰度对应不同的颜色：从黄到紫
-plt.imshow(muteimg[0,...])
-plt.show()
-print('标签是：',train_dataset[idx][1])
+# #随便从数据集中读入一张图片，并绘制出来
+# idx = 100
+# #dataset支持下标索引，其中提取出来的元素为features、target格式，即属性和标签。[0]表示索引features
+# muteimg = train_dataset[idx][0].numpy()
+# #一般的图像包含RGB这3个通道，而MNIST数据集的图像都是灰度的，只有一个通道
+# #因此，我们忽略通道，把图像看作一个灰度矩阵
+# #用imshow画图，会将灰度矩阵自动展现为彩色，不同灰度对应不同的颜色：从黄到紫
+# plt.imshow(muteimg[0,...])
+# plt.show()
+# print('标签是：',train_dataset[idx][1])
 
 
 """5.2.2 构建网络"""
@@ -193,7 +193,8 @@ for epoch in range(num_epochs):
 # #建立布尔变量，判断是否可以用GPU
 # use_cuda = torch.cuda.is_available()
 # #如果可以用GPU，则设定Tensor的变量类型支持GPU
-# dtype = torch.cuda.FloatTensor if use_cuda else torch.FloatTensor
+# # dtype = torch.cuda.FloatTensor if use_cuda else torch.FloatTensor
+# target = torch.cuda.FloatTensor if use_cuda else torch.FloatTensor
 # itype = torch.cuda.LongTensor if use_cuda else torch.LongTensor
 # #如果存在GPU，就将网络加载到GPU上
 # net = net.cuda() if use_cuda else net
