@@ -1,4 +1,7 @@
 import os
+'''
+配置文件路径
+'''
 # 工作区文件夹路径
 PROJECT_PATH = os.path.abspath(
     os.path.join(os.path.abspath(os.path.dirname(__file__)), os.pardir))

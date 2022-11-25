@@ -1,4 +1,3 @@
-# -*- encoding: utf8 -*-
 import config
 from torch.utils.data import DataLoader
 from torchvision import transforms

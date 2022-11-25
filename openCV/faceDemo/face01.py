@@ -3,6 +3,9 @@ import os
 import time
 import config
 
+'''
+人脸检测,收集数据集
+'''
 
 def catch_video(tag, window_name='catch face', camera_idx=0):
     """ catch_video 获取来自摄像头的视频流
