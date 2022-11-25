@@ -1,6 +1,7 @@
 import cv2
 import os
 import time
+import config
 
 
 def catch_video(tag, window_name='catch face', camera_idx=0):
@@ -13,7 +14,7 @@ def catch_video(tag, window_name='catch face', camera_idx=0):
     """
     cv2.namedWindow(window_name)
     # 设置摄像头
-    print(camera_idx)
+    print("摄像头编号:{}".format(camera_idx))
     cap = cv2.VideoCapture(camera_idx)
     # 检查摄像头是否启动
     if not cap.isOpened():
@@ -69,23 +70,23 @@ def catch_face(frame, tag):
 
 def save_face(image, tag, num):
     # DATA_TRAIN为抓取的人脸存放目录，如果目录不存在则创建
-    os.makedirs(os.path.join(DATA_TRAIN, str(tag)), exist_ok=True)
+    os.makedirs(os.path.join(config.DATA_TRAIN, str(tag)), exist_ok=True)
     # 图片文件名
-    img_name = os.path.join(DATA_TRAIN, str(tag), '{}_{}.jpg'.format(int(time.time()), num))
+    img_name = os.path.join(config.DATA_TRAIN, str(tag), '{}_{}.jpg'.format(int(time.time()), num))
     # 保存人脸图像到指定的位置
     cv2.imwrite(img_name, image)
 
-# 工作区文件夹路径
-PROJECT_PATH = os.path.abspath(
-    os.path.join(os.path.abspath(os.path.dirname(__file__)), os.pardir))
+# # 工作区文件夹路径
+# PROJECT_PATH = os.path.abspath(
+#     os.path.join(os.path.abspath(os.path.dirname(__file__)), os.pardir))
 
-# 训练数据集
-DATA_TRAIN = os.path.join(PROJECT_PATH, "data/train")
-# 验证数据集
-DATA_TEST = os.path.join(PROJECT_PATH, "data/test")
-# 模型保存地址
-DATA_MODEL = os.path.join(PROJECT_PATH, "data/model")
+# # 训练数据集
+# DATA_TRAIN = os.path.join(PROJECT_PATH, "data/train")
+# # 验证数据集
+# DATA_TEST = os.path.join(PROJECT_PATH, "data/test")
+# # 模型保存地址
+# DATA_MODEL = os.path.join(PROJECT_PATH, "data/model")
 
 if __name__ == '__main__':
-    # catch_video("wu_jing")
-    catch_video(tag="liu_jia_tai",camera_idx="F:/t3856/Pictures/Camera Roll/liu01.mp4")
+    catch_video("wu_jing")
+    # catch_video(tag="liu_jia_tai",camera_idx="F:/t3856/Pictures/Camera Roll/liu01.mp4")
