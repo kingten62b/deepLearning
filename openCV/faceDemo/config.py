@@ -1,7 +1,13 @@
 import os
 '''
-配置文件路径
+配置文件
 '''
+
+NUM_WORKERS=1 # 几个线程
+BATCH_SIZE=10 # 每次迭代使用多少个样本
+EPOCHS=50     # 每组样本迭代次数
+DEFAULT_MODEL="face_modle"
+
 # 工作区文件夹路径
 PROJECT_PATH = os.path.abspath(
     os.path.join(os.path.abspath(os.path.dirname(__file__)), os.pardir))
