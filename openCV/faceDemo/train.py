@@ -6,10 +6,9 @@ from model import Net
 import torch.nn.functional as F
 
 # 检查是否有GPU
-# torch.cuda.current_device()
-# torch.cuda._initialized = True
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# DEVICE="cpu"
+# DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+DEVICE="cpu"
+# print(DEVICE)
 
 def train_model():
     train_loader, test_loader = get_dataset(batch_size=config.BATCH_SIZE)
@@ -22,12 +21,12 @@ def train_model():
             x, y = x.to(DEVICE), y.to(DEVICE)
             output = net(x)
             # 使用最大似然 / log似然代价函数
-            loss = F.nll_loss(output, y)
-            # Pytorch会梯度累计所以需要梯度清零
+            loss = F.nll_loss(output, y)            
+            # 梯度清零
             optimizer.zero_grad()
             # 反向传播
             loss.backward()
-            # 使用Adam进行梯度更新
+            # 梯度更新
             optimizer.step()
             # 清除显存
             # torch.cuda.empty_cache()

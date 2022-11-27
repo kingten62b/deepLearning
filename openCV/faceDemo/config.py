@@ -3,9 +3,9 @@ import os
 配置文件
 '''
 
-NUM_WORKERS=1 # 几个线程
+NUM_WORKERS=8 # 几个线程
 BATCH_SIZE=10 # 每次迭代使用多少个样本
-EPOCHS=50     # 每组样本迭代次数
+EPOCHS=50     # 训练的总循环周期
 DEFAULT_MODEL="face_modle"
 
 # 工作区文件夹路径

@@ -188,21 +188,6 @@ for epoch in range(num_epochs):
             net.conv2.weight.data.clone(), net.conv2.bias.data.clone()])
 
 
-
-# """gpu"""
-# #建立布尔变量，判断是否可以用GPU
-# use_cuda = torch.cuda.is_available()
-# #如果可以用GPU，则设定Tensor的变量类型支持GPU
-# # dtype = torch.cuda.FloatTensor if use_cuda else torch.FloatTensor
-# target = torch.cuda.FloatTensor if use_cuda else torch.FloatTensor
-# itype = torch.cuda.LongTensor if use_cuda else torch.LongTensor
-# #如果存在GPU，就将网络加载到GPU上
-# net = net.cuda() if use_cuda else net
-# #将数据复制出来，然后加载到GPU上
-# data, target = data.clone().detach().requires_grad(True),target.clone().detach()
-# if use_cuda:
-#     data, target = data.cuda(), target.cuda()
-
 """5.2.4 测试模型"""
 #在测试集上分批运行，并计算总的正确率
 net.eval() #标志着模型当前为运行阶段
