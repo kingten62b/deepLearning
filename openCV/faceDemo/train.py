@@ -2,15 +2,16 @@ import config
 import os
 import torch
 from data_pretreatment import get_dataset, get_transform
-from model import Net
+from model import Net,rightness
 import torch.nn.functional as F
 
 # 检查是否有GPU
-# DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-DEVICE="cpu"
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# DEVICE="cpu"
 # print(DEVICE)
 
 def train_model():
+    train_rights = [] #记录训练数据集准确率
     train_loader, test_loader = get_dataset(batch_size=config.BATCH_SIZE)
     net = Net().to(DEVICE)
     # 使用Adam/SDG优化器
@@ -19,6 +20,7 @@ def train_model():
     for epoch in range(config.EPOCHS):
         for step, (x, y) in enumerate(train_loader):
             x, y = x.to(DEVICE), y.to(DEVICE)
+            # x, y = x.clone().requires_grad_(True), y.clone().detach()
             output = net(x)
             # 使用最大似然 / log似然代价函数
             loss = F.nll_loss(output, y)            
@@ -32,9 +34,20 @@ def train_model():
             # torch.cuda.empty_cache()
 
             if (step + 1) % 3 == 0:
-                print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                    epoch + 1, step * len(x), len(train_loader.dataset),
-                    100. * step / len(train_loader), loss.item()))
+                train_rights.append(rightness(output, y)) #将计算结果装到列表容器train_rights中
+                train_r = (sum([tup[0] for tup in train_rights]), sum([tup[1] for tup in train_rights]))
+                #开始在校验集上做循环，计算校验集上的准确度
+                val_rights = [] #记录校验数据集准确率的容器
+                for (x, y) in test_loader:
+                    x, y = x.to(DEVICE), y.to(DEVICE)
+                    output = net(x)
+                    val_rights.append(rightness(output, y)) #将计算结果装到列表容器train_rights中
+                    val_r = (sum([tup[0] for tup in val_rights]), sum([tup[1] for tup in val_rights]))
+
+                print('训练周期: {} [{:.0f}%]\tLoss: {:.6f}\t训练正确率: {:.3f}\t校验正确率:{:.3f}'
+                    .format(epoch+1, 100*(epoch+1)/config.EPOCHS, loss.item(), 
+                            100*train_r[0]/train_r[1],
+                            100*val_r[0]/val_r[1]))
     # 使用验证集查看模型效果
     test(net, test_loader)
     # 保存模型权重到 config.DATA_MODEL目录

@@ -3,7 +3,7 @@ import os
 配置文件
 '''
 
-NUM_WORKERS=8 # 几个线程
+NUM_WORKERS=1 # 几个线程
 BATCH_SIZE=10 # 每次迭代使用多少个样本
 EPOCHS=50     # 训练的总循环周期
 DEFAULT_MODEL="face_modle"
@@ -14,7 +14,7 @@ PROJECT_PATH = os.path.abspath(
 
 # 训练数据集
 DATA_TRAIN = os.path.join(PROJECT_PATH, "data/train")
-# 验证数据集
+# 测试数据 用于评估模型的准确率,不用于模型构建过程，否则会导致过渡拟合。
 DATA_TEST = os.path.join(PROJECT_PATH, "data/test")
 # 模型保存地址
 DATA_MODEL = os.path.join(PROJECT_PATH, "data/model")

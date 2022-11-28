@@ -19,12 +19,31 @@ def get_transform():
                                  std=[0.2, 0.2, 0.2])
         ])
 
+# def get_dataset(batch_size=10, num_workers=config.NUM_WORKERS):
+#     data_transform = get_transform()
+#     # 训练集图片
+#     train_dataset = ImageFolder(root=config.DATA_TRAIN, transform=data_transform)
+#     # 验证集图片
+#     test_dataset = ImageFolder(root=config.DATA_TEST, transform=data_transform)
+#     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=config.NUM_WORKERS)
+#     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True, num_workers=config.NUM_WORKERS)
+#     return train_loader, test_loader
+
 def get_dataset(batch_size=10, num_workers=config.NUM_WORKERS):
     data_transform = get_transform()
     # 训练集图片
-    train_dataset = ImageFolder(root=config.DATA_TRAIN, transform=data_transform)
-    # 验证集图片
-    test_dataset = ImageFolder(root=config.DATA_TEST, transform=data_transform)
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=config.NUM_WORKERS)
-    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True, num_workers=config.NUM_WORKERS)
+    train_dataset = ImageFolder(root=config.DATA_TRAIN, 
+                                transform=data_transform)
+    # 测试集图片
+    test_dataset = ImageFolder(root=config.DATA_TEST, 
+                                transform=data_transform)
+    # 训练数据集的加载器，自动将数据切分成批，顺序随机打乱
+    train_loader = DataLoader(dataset=train_dataset,
+                                batch_size=batch_size,
+                                shuffle=True,
+                                num_workers=num_workers)
+    test_loader = DataLoader(dataset=test_dataset, 
+                            batch_size=batch_size, 
+                            shuffle=True, 
+                            num_workers=num_workers)
     return train_loader, test_loader

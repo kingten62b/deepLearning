@@ -66,7 +66,7 @@ def catch_face(frame, tag):
             x, y, w, h = face_rects
             image = frame[y - 10:y + h + 10, x - 10:x + w + 10]
             # 保存人脸图像
-            # save_face(image, tag, num)
+            save_face(image, tag, num)
             # 绘制人脸边框
             cv2.rectangle(frame, (x - 10, y - 10), (x + w + 10, y + h + 10), color, 2)
             num += 1
@@ -91,5 +91,5 @@ def save_face(image, tag, num):
 # DATA_MODEL = os.path.join(PROJECT_PATH, "data/model")
 
 if __name__ == '__main__':
-    catch_video("wu_jing")
+    catch_video("wu_zhi_hao")
     # catch_video(tag="liu_jia_tai",camera_idx="F:/t3856/Pictures/Camera Roll/liu01.mp4")
