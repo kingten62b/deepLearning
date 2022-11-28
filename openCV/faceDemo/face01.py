@@ -79,17 +79,6 @@ def save_face(image, tag, num):
     # 保存人脸图像到指定的位置
     cv2.imwrite(img_name, image)
 
-# # 工作区文件夹路径
-# PROJECT_PATH = os.path.abspath(
-#     os.path.join(os.path.abspath(os.path.dirname(__file__)), os.pardir))
-
-# # 训练数据集
-# DATA_TRAIN = os.path.join(PROJECT_PATH, "data/train")
-# # 验证数据集
-# DATA_TEST = os.path.join(PROJECT_PATH, "data/test")
-# # 模型保存地址
-# DATA_MODEL = os.path.join(PROJECT_PATH, "data/model")
-
 if __name__ == '__main__':
     catch_video("wu_zhi_hao")
     # catch_video(tag="liu_jia_tai",camera_idx="F:/t3856/Pictures/Camera Roll/liu01.mp4")
