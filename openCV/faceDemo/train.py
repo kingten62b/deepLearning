@@ -4,6 +4,7 @@ import torch
 from data_pretreatment import get_dataset, get_transform
 from model import Net,rightness
 import torch.nn.functional as F
+import matplotlib.pyplot as plt
 
 # 检查是否有GPU
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -12,18 +13,18 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train_model():
     train_rights = [] #记录训练数据集准确率
+    record = [] #记录训练数据集准确率/校验集准确率的容器,用于后续绘图
     train_loader, test_loader = get_dataset(batch_size=config.BATCH_SIZE)
     net = Net().to(DEVICE)
     # 使用Adam/SDG优化器
-    # optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
-    optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
+    optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
+    # optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
     for epoch in range(config.EPOCHS):
         for step, (x, y) in enumerate(train_loader):
             x, y = x.to(DEVICE), y.to(DEVICE)
-            # x, y = x.clone().requires_grad_(True), y.clone().detach()
-            output = net(x)
+            output = net(x).to(DEVICE)  
             # 使用最大似然 / log似然代价函数
-            loss = F.nll_loss(output, y)            
+            loss = F.nll_loss(output, y).to(DEVICE)          
             # 梯度清零
             optimizer.zero_grad()
             # 反向传播
@@ -41,17 +42,24 @@ def train_model():
                 for (x, y) in test_loader:
                     x, y = x.to(DEVICE), y.to(DEVICE)
                     output = net(x)
-                    val_rights.append(rightness(output, y)) #将计算结果装到列表容器train_rights中
+                    val_rights.append(rightness(output, y)) #将计算结果装到列表容器val_rights中
                     val_r = (sum([tup[0] for tup in val_rights]), sum([tup[1] for tup in val_rights]))
 
                 print('训练周期: {} [{:.0f}%]\tLoss: {:.6f}\t训练正确率: {:.3f}\t校验正确率:{:.3f}'
                     .format(epoch+1, 100*(epoch+1)/config.EPOCHS, loss.item(), 
                             100*train_r[0]/train_r[1],
                             100*val_r[0]/val_r[1]))
+                record.append(( (100-100*train_r[0]/train_r[1]).to("cpu"), (100-100*val_r[0]/val_r[1]).to("cpu") )) # 将数据移到CPU
     # 使用验证集查看模型效果
     test(net, test_loader)
     # 保存模型权重到 config.DATA_MODEL目录
     torch.save(net.state_dict(), os.path.join(config.DATA_MODEL, config.DEFAULT_MODEL))
+    #绘制训练过程的误差曲线，校验集和测试集上的错误率
+    plt.figure(figsize = (10, 7))
+    plt.plot(record) #record记载了每一个打印周期记录的训练集和校验集上的准确度
+    plt.xlabel('Steps')
+    plt.ylabel('Error rate')
+    plt.show()
     return net
 
 def test(model, test_loader):

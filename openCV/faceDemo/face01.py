@@ -70,6 +70,7 @@ def catch_face(frame, tag):
             # 绘制人脸边框
             cv2.rectangle(frame, (x - 10, y - 10), (x + w + 10, y + h + 10), color, 2)
             num += 1
+    print("已收集:",num)
 
 def save_face(image, tag, num):
     # DATA_TRAIN为抓取的人脸存放目录，如果目录不存在则创建
@@ -80,5 +81,5 @@ def save_face(image, tag, num):
     cv2.imwrite(img_name, image)
 
 if __name__ == '__main__':
-    catch_video("wu_zhi_hao")
+    catch_video("liu_jia_tai")
     # catch_video(tag="liu_jia_tai",camera_idx="F:/t3856/Pictures/Camera Roll/liu01.mp4")
