@@ -7,6 +7,8 @@ import config
 人脸检测,收集数据集
 '''
 
+sum = 0 # 记录采集到的人脸数
+
 def catch_video(tag, window_name='catch face', camera_idx=0):
     """ catch_video 获取来自摄像头的视频流
 
@@ -46,7 +48,7 @@ def catch_face(frame, tag):
 
     :param frame: 需要检测人脸的帧
     :param tag: 标签(人脸名)
-    :return None
+    :return num: 检测到的人脸数
     """
     # 使用openCV人脸识别分类器
     classfier = cv2.CascadeClassifier("openCV/faceDemo/cv2data/haarcascade_frontalface_alt2.xml")
@@ -70,7 +72,6 @@ def catch_face(frame, tag):
             # 绘制人脸边框
             cv2.rectangle(frame, (x - 10, y - 10), (x + w + 10, y + h + 10), color, 2)
             num += 1
-    print("已收集:",num)
 
 def save_face(image, tag, num):
     # DATA_TRAIN为抓取的人脸存放目录，如果目录不存在则创建
@@ -78,8 +79,11 @@ def save_face(image, tag, num):
     # 图片文件名
     img_name = os.path.join(config.DATA_TRAIN, str(tag), '{}_{}.jpg'.format(int(time.time()), num))
     # 保存人脸图像到指定的位置
-    cv2.imwrite(img_name, image)
+    if cv2.imwrite(img_name, image):
+        global sum 
+        sum += 1
+        print("已收集:",sum)
 
 if __name__ == '__main__':
-    catch_video("liu_jia_tai")
+    catch_video("wu_zhi_hao")
     # catch_video(tag="liu_jia_tai",camera_idx="F:/t3856/Pictures/Camera Roll/liu01.mp4")

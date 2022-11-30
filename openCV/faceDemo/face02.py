@@ -9,8 +9,7 @@ from PIL import Image, ImageDraw
 
 FACE_LABEL = {
     0: "liu",
-    1: "wu_jing",
-    2: "wu_zhi_hao"
+    1: "wu_zhi_hao"
 }
 
 # 检查是否有GPU

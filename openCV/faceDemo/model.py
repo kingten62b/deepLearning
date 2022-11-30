@@ -30,7 +30,7 @@ class Net(nn.Module):
             nn.Dropout(0.2)
         )
         # 全连接层 
-        self.out = nn.Linear(32 * 8 * 8, 4)
+        self.out = nn.Linear(32 * 8 * 8, 2)
         
     def forward(self, x):
         x = self.conv1(x)
