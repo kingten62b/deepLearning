@@ -12,14 +12,14 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # print(DEVICE)
 
 def train_model():
-    train_rights = [] #记录训练数据集准确率
     record = [] #记录训练数据集准确率/校验集准确率的容器,用于后续绘图
     train_loader, test_loader = get_dataset(batch_size=config.BATCH_SIZE)
     net = Net().to(DEVICE)
     # 使用Adam/SDG优化器
-    optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
-    # optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
+    # optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
+    optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
     for epoch in range(config.EPOCHS):
+        train_rights = [] #记录训练数据集准确率
         for step, (x, y) in enumerate(train_loader):
             x, y = x.to(DEVICE), y.to(DEVICE)
             output = net(x).to(DEVICE)  
@@ -43,9 +43,9 @@ def train_model():
                     x, y = x.to(DEVICE), y.to(DEVICE)
                     output = net(x)
                     val_rights.append(rightness(output, y)) #将计算结果装到列表容器val_rights中
-                    val_r = (sum([tup[0] for tup in val_rights]), sum([tup[1] for tup in val_rights]))
+                val_r = (sum([tup[0] for tup in val_rights]), sum([tup[1] for tup in val_rights]))
 
-                print('训练周期: {} [{:.0f}%]\tLoss: {:.6f}\t训练正确率: {:.3f}\t校验正确率:{:.3f}'
+                print('训练周期: {} [{:.0f}%]\tLoss: {:.6f}\t训练集正确率: {:.3f}\t测试集正确率:{:.3f}'
                     .format(epoch+1, 100*(epoch+1)/config.EPOCHS, loss.item(), 
                             100*train_r[0]/train_r[1],
                             100*val_r[0]/val_r[1]))
