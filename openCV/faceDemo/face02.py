@@ -4,7 +4,7 @@ import config
 import numpy as np
 from model import Net
 import os
-from data_pretreatment import get_dataset, get_transform
+from data_pretreatment import  get_transform
 from PIL import Image, ImageDraw
 
 FACE_LABEL = {
@@ -38,7 +38,7 @@ def catch_face(frame):
     classfier = cv2.CascadeClassifier("openCV/faceDemo/cv2data/haarcascade_frontalface_alt2.xml")
     color = (0, 255, 0)
     grey = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    face_rects = classfier.detectMultiScale(grey, scaleFactor=1.2, minNeighbors=3, minSize=(32, 32))
+    face_rects = classfier.detectMultiScale(grey, scaleFactor=1.2, minNeighbors=3, minSize=(config.IMG_SIZE, config.IMG_SIZE))
     if len(face_rects) > 0:
         for face_rects in face_rects:
             x, y, w, h = face_rects
@@ -50,7 +50,6 @@ def catch_face(frame):
             cv2.rectangle(frame, (x - 10, y - 10), (x + w + 10, y + h + 10), color, 2)
             # 将人脸对应人名写到图片上, 中文名要加载中文字体库
             frame = paint_opencv(frame, FACE_LABEL[label], (x-10, y+h+10), (255,0,0))
-
     return frame
 
 def cv2pil(image):
@@ -60,7 +59,7 @@ def predict_model(image):
     data_transform = get_transform()
     # 对图片进行预处理，同训练的时候一样
     image = data_transform(image)
-    image = image.view(-1, 3, 128, 128)
+    image = image.view(-1, 3, config.IMG_SIZE, config.IMG_SIZE)
     net = Net().to(DEVICE)
     # 加载模型参数权重
     net.load_state_dict(torch.load(os.path.join(config.DATA_MODEL, config.DEFAULT_MODEL)))

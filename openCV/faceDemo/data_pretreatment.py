@@ -9,10 +9,10 @@ from torchvision.datasets import ImageFolder
 
 def get_transform():
     return transforms.Compose([
-            # 图像缩放到32 x 32
-            transforms.Resize(128),
-            # 中心裁剪 32 x 32
-            transforms.CenterCrop(128),
+            # 图像缩放到128 x 128
+            transforms.Resize(config.IMG_SIZE),
+            # 中心裁剪 128 x 128
+            transforms.CenterCrop(config.IMG_SIZE),
             transforms.ToTensor(),
             # 对每个像素点进行归一化
             transforms.Normalize(mean=[0.4, 0.4, 0.4],

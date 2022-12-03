@@ -6,7 +6,8 @@ import os
 NUM_WORKERS=1 # 几个线程
 BATCH_SIZE=16 # 每次迭代使用多少个样本
 EPOCHS=20     # 训练的总循环周期
-DEFAULT_MODEL="face_modle.pkl"
+IMG_SIZE=64  # 输入图像尺寸
+DEFAULT_MODEL="face_modle.pkl" # 模型名称
 
 # 工作区文件夹路径
 PROJECT_PATH = os.path.abspath(

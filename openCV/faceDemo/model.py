@@ -1,6 +1,7 @@
 from torch import nn
 import torch.nn.functional as F
 import torch
+from config import IMG_SIZE
 
 '''
 定义卷积神经网络
@@ -10,7 +11,7 @@ class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
         # 第一层激活->池化->Dropout
-        # input 3*128*128-卷积->16*128*128-池化->16*64*64
+        # input 3*64*64-卷积->16*64*64-池化->16*32*32
         self.conv1 = nn.Sequential(
             nn.Conv2d(
                 in_channels=3,
@@ -24,7 +25,7 @@ class Net(nn.Module):
             nn.Dropout(0.2)
         )
         # 第二层卷积->激活->池化->Dropout
-        # input 16*64*64-卷积->32*64*64-池化->32*32*32
+        # input 16*32*32-卷积->32*32*32-池化->32*16*16
         self.conv2 = nn.Sequential(
             nn.Conv2d(16, 32, 5, 1, 2),
             nn.ReLU(),
@@ -32,7 +33,7 @@ class Net(nn.Module):
             nn.Dropout(0.2)
         )
         # 第三层卷积->激活->池化->Dropout
-        # input 32*32*32-卷积->32*32*32-池化->32*16*16
+        # input 32*16*16-卷积->32*16*16-池化->32*8*8
         self.conv3 = nn.Sequential(
             nn.Conv2d(32, 32, 5, 1, 2),
             nn.ReLU(),
@@ -40,7 +41,7 @@ class Net(nn.Module):
             nn.Dropout(0.2)
         )
         # 全连接层 
-        self.out = nn.Linear(32 * 16 * 16, 3)
+        self.out = nn.Linear(32 * IMG_SIZE//8 * IMG_SIZE//8 , 3)
         
     def forward(self, x):
         # print(x.shape)
