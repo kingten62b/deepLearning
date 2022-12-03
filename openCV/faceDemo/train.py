@@ -1,3 +1,4 @@
+import os
 import config
 import torch
 from data_pretreatment import get_dataset
