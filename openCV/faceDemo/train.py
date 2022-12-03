@@ -22,7 +22,7 @@ def train_model():
         train_rights = [] #记录训练数据集准确率
         for step, (x, y) in enumerate(train_loader):
             x, y = x.to(DEVICE), y.to(DEVICE)
-            output = net(x).to(DEVICE)  
+            output = net(x).to(DEVICE)
             # 使用最大似然 / log似然代价函数
             loss = F.nll_loss(output, y).to(DEVICE)          
             # 梯度清零
