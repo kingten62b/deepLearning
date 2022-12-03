@@ -12,7 +12,7 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # print(DEVICE)
 
 def train_model():
-    record = [] #记录训练数据集准确率/校验集准确率的容器,用于后续绘图
+    record = [] #记录训练数据集准确率/测试集准确率的容器,用于后续绘图
     train_loader, test_loader = get_dataset(batch_size=config.BATCH_SIZE)
     net = Net().to(DEVICE)
     # 使用Adam/SDG优化器
@@ -43,8 +43,8 @@ def train_model():
             if (step + 1) % 5 == 0:
                 train_rights.append(rightness(output, y)) #将计算结果装到列表容器train_rights中
                 train_r = (sum([tup[0] for tup in train_rights]), sum([tup[1] for tup in train_rights]))
-                #开始在校验集上做循环，计算校验集上的准确度
-                val_rights = [] #记录校验数据集准确率的容器
+                #开始在测试集上做循环，计算测试集上的准确度
+                val_rights = [] #记录测试集准确率的容器
                 for (x, y) in test_loader:
                     x, y = x.to(DEVICE), y.to(DEVICE)
                     output = net(x)
