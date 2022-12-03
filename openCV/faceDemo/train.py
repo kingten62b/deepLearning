@@ -17,6 +17,12 @@ def train_model():
     # 使用Adam/SDG优化器
     # optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
     optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
+    # optimizer = torch.optim.Adam(net.parameters(),
+    #             lr=0.001,
+    #             betas=(0.9, 0.999),
+    #             eps=1e-08,
+    #             weight_decay=0,
+    #             amsgrad=False)
     for epoch in range(config.EPOCHS):
         train_rights = [] #记录训练数据集准确率
         for step, (x, y) in enumerate(train_loader):
@@ -33,7 +39,7 @@ def train_model():
             # 清除显存
             # torch.cuda.empty_cache()
 
-            if (step + 1) % 3 == 0:
+            if (step + 1) % 5 == 0:
                 train_rights.append(rightness(output, y)) #将计算结果装到列表容器train_rights中
                 train_r = (sum([tup[0] for tup in train_rights]), sum([tup[1] for tup in train_rights]))
                 #开始在校验集上做循环，计算校验集上的准确度

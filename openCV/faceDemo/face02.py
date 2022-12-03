@@ -8,7 +8,7 @@ from data_pretreatment import get_dataset, get_transform
 from PIL import Image, ImageDraw
 
 FACE_LABEL = {
-    0: "liu",
+    0: "liu_jia_tai",
     1 : 'wu_jin',
     2: "wu_zhi_hao"
 }
