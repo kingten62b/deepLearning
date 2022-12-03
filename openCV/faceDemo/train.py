@@ -52,15 +52,7 @@ def train_model():
                 record.append(( (100-100*train_r[0]/train_r[1]).to("cpu"), (100-100*val_r[0]/val_r[1]).to("cpu") )) # 将数据移到CPU
     # 使用验证集查看模型效果
     test(net, test_loader)
-    # 保存模型权重到 config.DATA_MODEL目录
-    torch.save(net.state_dict(), os.path.join(config.DATA_MODEL, config.DEFAULT_MODEL))
-    #绘制训练过程的误差曲线，校验集和测试集上的错误率
-    plt.figure(figsize = (10, 7))
-    plt.plot(record) #record记载了每一个打印周期记录的训练集和校验集上的准确度
-    plt.xlabel('Steps')
-    plt.ylabel('Error rate')
-    plt.show()
-    return net
+    return record
 
 def test(model, test_loader):
     model.eval()
@@ -78,4 +70,10 @@ def test(model, test_loader):
     print('\ntest loss={:.4f}, accuracy={:.4f}\n'.format(test_loss, float(correct) / len(test_loader.dataset)))
 
 if (__name__=="__main__"):
-    train_model()
+    record = train_model()
+    #绘制训练过程的误差曲线，校验集和测试集上的错误率
+    plt.figure(figsize = (10, 7))
+    plt.plot(record) #record记载了每一个打印周期记录的训练集和校验集上的准确度
+    plt.xlabel('Steps')
+    plt.ylabel('Error rate')
+    plt.show()

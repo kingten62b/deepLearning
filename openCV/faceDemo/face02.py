@@ -69,20 +69,6 @@ def predict_model(image):
     pred = output.max(1, keepdim=True)[1]
     return pred.item()
 
-# def paint_opencv(im, chinese, pos, color):
-#     img_PIL = Image.fromarray(cv2.cvtColor(im, cv2.COLOR_BGR2RGB))
-#     # 引用字体库
-#     font = ImageFont.truetype('/Library/Fonts/Songti.ttc', 20)
-#     fillColor = color
-#     position = pos
-#     if not isinstance(chinese, unicode):
-#         chinese = chinese.decode('utf-8')
-#     draw = ImageDraw.Draw(img_PIL)
-#     # 写上人脸对应的人名
-#     draw.text(position, chinese, font=font, fill=fillColor)
-#     img = cv2.cvtColor(np.asarray(img_PIL), cv2.COLOR_RGB2BGR)
-#     return img
-
 def paint_opencv(im, chinese, pos, color):
     img_PIL = Image.fromarray(cv2.cvtColor(im, cv2.COLOR_BGR2RGB))
     fillColor = color
