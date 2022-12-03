@@ -60,7 +60,7 @@ def predict_model(image):
     data_transform = get_transform()
     # 对图片进行预处理，同训练的时候一样
     image = data_transform(image)
-    image = image.view(-1, 3, 32, 32)
+    image = image.view(-1, 3, 128, 128)
     net = Net().to(DEVICE)
     # 加载模型参数权重
     net.load_state_dict(torch.load(os.path.join(config.DATA_MODEL, config.DEFAULT_MODEL)))

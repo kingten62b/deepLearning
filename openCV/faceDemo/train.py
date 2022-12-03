@@ -57,6 +57,7 @@ def train_model():
                 record.append(( (100-100*train_r[0]/train_r[1]).to("cpu"), (100-100*val_r[0]/val_r[1]).to("cpu") )) # 将数据移到CPU
     # 使用验证集查看模型效果
     test(net, test_loader)
+    torch.save(net.state_dict(), os.path.join(config.DATA_MODEL, config.DEFAULT_MODEL))
     return record
 
 def test(model, test_loader):
