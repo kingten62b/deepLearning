@@ -1,4 +1,4 @@
 {
-    "commentTranslate.hover.enabled": true,
+    "commentTranslate.hover.enabled": false,
     "git.ignoreLimitWarning": true
 }

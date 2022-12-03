@@ -85,5 +85,5 @@ def save_face(image, tag, num):
         print("已收集:",sum)
 
 if __name__ == '__main__':
-    catch_video("wu_zhi_hao")
+    catch_video("wu_jin")
     # catch_video(tag="liu_jia_tai",camera_idx="F:/t3856/Pictures/Camera Roll/liu01.mp4")
