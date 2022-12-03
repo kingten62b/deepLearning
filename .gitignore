@@ -1,3 +1,3 @@
-openCV/data/train/*
-openCV/data/test/*
+# openCV/data/train/*
+# openCV/data/test/*
 .vscode/*

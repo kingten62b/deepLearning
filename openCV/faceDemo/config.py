@@ -4,7 +4,7 @@ import os
 '''
 
 NUM_WORKERS=1 # 几个线程
-BATCH_SIZE=10 # 每次迭代使用多少个样本
+BATCH_SIZE=20 # 每次迭代使用多少个样本
 EPOCHS=40     # 训练的总循环周期
 DEFAULT_MODEL="face_modle.pkl"
 

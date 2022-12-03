@@ -17,8 +17,8 @@ def train_model():
     train_loader, test_loader = get_dataset(batch_size=config.BATCH_SIZE)
     net = Net().to(DEVICE)
     # 使用Adam/SDG优化器
-    # optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
-    optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
+    optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
+    # optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
     for epoch in range(config.EPOCHS):
         for step, (x, y) in enumerate(train_loader):
             x, y = x.to(DEVICE), y.to(DEVICE)
