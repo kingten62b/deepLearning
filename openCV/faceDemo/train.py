@@ -1,7 +1,6 @@
 import config
-import os
 import torch
-from data_pretreatment import get_dataset, get_transform
+from data_pretreatment import get_dataset
 from model import Net,rightness
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
