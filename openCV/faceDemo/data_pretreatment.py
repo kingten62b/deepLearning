@@ -36,4 +36,8 @@ def get_dataset(batch_size=10, num_workers=config.NUM_WORKERS):
                             batch_size=batch_size, 
                             shuffle=True, 
                             num_workers=num_workers)
+    print(train_dataset.class_to_idx) #查看子文件夹与标签的映射，注意：不是顺序映射
     return train_loader, test_loader
+
+if (__name__=="__main__"):
+    train_loader, test_loader = get_dataset()
