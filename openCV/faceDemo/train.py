@@ -18,12 +18,6 @@ def train_model():
     # 使用Adam/SDG优化器
     # optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
     optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
-    # optimizer = torch.optim.Adam(net.parameters(),
-    #             lr=0.001,
-    #             betas=(0.9, 0.999),
-    #             eps=1e-08,
-    #             weight_decay=0,
-    #             amsgrad=False)
     for epoch in range(config.EPOCHS):
         train_rights = [] #记录训练数据集准确率
         for step, (x, y) in enumerate(train_loader):
@@ -76,7 +70,7 @@ def test(model, test_loader):
     test_loss /= len(test_loader.dataset)
     print('\ntest loss={:.4f}, accuracy={:.4f}\n'.format(test_loss, float(correct) / len(test_loader.dataset)))
 
-if (__name__=="__main__"):
+if __name__=="__main__":
     record = train_model()
     #绘制训练过程的误差曲线，校验集和测试集上的错误率
     plt.figure(figsize = (10, 7))
