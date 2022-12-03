@@ -3,14 +3,20 @@ import torch
 import config
 import numpy as np
 from model import Net
-import os
+import os, time
 from data_pretreatment import  get_transform
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw ,ImageFont
 
+# FACE_LABEL = {
+#     0: "liu_jia_tai",
+#     1 : "wu_jin",
+#     2: "wu_zhi_hao"
+# }
+ 
 FACE_LABEL = {
-    0: "liu_jia_tai",
-    1 : 'wu_jin',
-    2: "wu_zhi_hao"
+     0: "刘家泰",
+     1 : "吴进",
+     2: "吴志豪"
 }
 
 # 检查是否有GPU
@@ -36,7 +42,8 @@ def recognize_video(window_name='face recognize', camera_idx=0):
 
 def catch_face(frame):
     classfier = cv2.CascadeClassifier("openCV/faceDemo/cv2data/haarcascade_frontalface_alt2.xml")
-    color = (0, 255, 0)
+    color_reg = (0, 255, 0) # 边框颜色
+    color_font = (255 ,0, 0) # 字体颜色
     grey = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     face_rects = classfier.detectMultiScale(grey, scaleFactor=1.2, minNeighbors=3, minSize=(config.IMG_SIZE, config.IMG_SIZE))
     if len(face_rects) > 0:
@@ -47,9 +54,10 @@ def catch_face(frame):
             PIL_image = cv2pil(image)
             # 使用模型进行人脸识别
             label = predict_model(PIL_image)
-            cv2.rectangle(frame, (x - 10, y - 10), (x + w + 10, y + h + 10), color, 2)
+            cv2.rectangle(frame, (x - 10, y - 10), (x + w + 10, y + h + 10), color_reg, 2)
             # 将人脸对应人名写到图片上, 中文名要加载中文字体库
-            frame = paint_opencv(frame, FACE_LABEL[label], (x-10, y+h+10), (255,0,0))
+            frame = paint_opencv(frame, FACE_LABEL[label], (x-10, y+h+10), color_font)
+            cv2.imwrite("data/tmp/{}.jpg".format(int(time.time())), frame)
     return frame
 
 def cv2pil(image):
@@ -72,9 +80,11 @@ def paint_opencv(im, chinese, pos, color):
     img_PIL = Image.fromarray(cv2.cvtColor(im, cv2.COLOR_BGR2RGB))
     fillColor = color
     position = pos
+    font = ImageFont.truetype('openCV/faceDemo/cv2data/SimHei.ttf', 20)
     draw = ImageDraw.Draw(img_PIL)
     # 写上人脸对应的人名
-    draw.text(position, chinese, fill=fillColor)
+    # draw.text(position, chinese, fill=fillColor)
+    draw.text(position, chinese.encode('utf-8').decode('utf-8'), fill=fillColor, font=font)
     print(chinese)
     img = cv2.cvtColor(np.asarray(img_PIL), cv2.COLOR_RGB2BGR)
     return img
