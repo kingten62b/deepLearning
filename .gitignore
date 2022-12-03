@@ -1,2 +1,3 @@
-openCV/data/*
-.vscode/settings.json
+openCV/data/train/*
+openCV/data/test/*
+.vscode
