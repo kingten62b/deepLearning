@@ -12,11 +12,11 @@ from PIL import Image, ImageDraw ,ImageFont
 #     1 : "wu_jin",
 #     2: "wu_zhi_hao"
 # }
- 
 FACE_LABEL = {
      0: "刘家泰",
-     1 : "吴进",
-     2: "吴志豪"
+     1: " 罗珍珍",
+     2: "吴进",
+     3: "吴志豪"
 }
 
 # 检查是否有GPU

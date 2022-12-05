@@ -80,5 +80,5 @@ def save_face(image, tag, num):
     cv2.imwrite(img_name, image)
 
 if __name__ == '__main__':
-    catch_video("liu_jia_tai")
+    catch_video("luo_zhen_zhen")
     # catch_video(tag="liu_jia_tai",camera_idx="F:/t3856/Pictures/Camera Roll/liu01.mp4")
