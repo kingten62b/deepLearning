@@ -10,8 +10,8 @@ import matplotlib.pyplot as plt
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # DEVICE="cpu"
 # print(DEVICE)
-dtype = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
-itype = torch.cuda.LongTensor if torch.cuda.is_available() else torch.LongTensor
+# dtype = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
+# itype = torch.cuda.LongTensor if torch.cuda.is_available() else torch.LongTensor
 
 def train_model():
     record = [] #记录训练数据集准确率/验证集准确率的容器,用于后续绘图
