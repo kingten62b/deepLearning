@@ -1,4 +1,5 @@
 {
-    "commentTranslate.hover.enabled": true,
-    "git.ignoreLimitWarning": true
+    "commentTranslate.hover.enabled": false,
+    "git.ignoreLimitWarning": true,
+    "python.analysis.typeCheckingMode": "off"
 }

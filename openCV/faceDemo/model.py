@@ -41,7 +41,7 @@ class Net(nn.Module):
             nn.Dropout(0.2)
         )
         # 全连接层 
-        self.out = nn.Linear(32 * IMG_SIZE//8 * IMG_SIZE//8 , 4)
+        self.out = nn.Linear(32 * IMG_SIZE//8 * IMG_SIZE//8 , 4025)
         
     def forward(self, x):
         # print(x.shape)

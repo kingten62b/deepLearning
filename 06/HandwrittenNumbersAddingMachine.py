@@ -11,10 +11,23 @@ import time
 import copy
 import os
 
+def rightness(predictions, labels):
+    '''rightness 计算预测错误率的函数
+    
+    :param predictions 是模型给出的一组预测结果,batch_size行num_classes列的矩阵
+    :param labels是数据中的正确答案
+    :return 返回数值为（正确样例数，总样本数）
+    '''
+    #对于任意一行（一个样本）的输出值的第1个维度求最大，得到每一行最大元素的下标
+    pred = torch.max(predictions.data, 1)[1]
+    #将下标与labels中包含的类别进行比较，并累计得到比较正确的数量
+    rights = pred.eq(labels.data.view_as(pred)).sum()
+    return rights, len(labels) #返回正确的数量和这一次一共比较了多少元素
+
 #从硬盘文件夹中加载图像数据集
 #数据存储总路径
 # data_dir = 'data'
-data_dir = '06\\data'
+data_dir = 'F:\\data\\hymenoptera_data'
 #图像的大小为224×224像素
 image_size = 224
 #从data_dir/train加载文件
@@ -37,11 +50,12 @@ train_dataset = datasets.ImageFolder(os.path.join(data_dir, 'train'),
 #3. 将图像的色彩数值标准化
 val_dataset = datasets.ImageFolder(os.path.join(data_dir, 'val'),
                                     transforms.Compose([
-                                    transforms.Scale(256),
-                                    transforms.CenterCrop(image_size),
-                                    transforms.ToTensor(),
-                                    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-                                    ])
+                                        # transforms.Scale(256), # 此方法在新版torch中已废弃
+                                        transforms.Resize(256),
+                                        transforms.CenterCrop(image_size),
+                                        transforms.ToTensor(),
+                                        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+                                        ])
                                     )
 #创建相应的数据加载器
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size = 4, shuffle = True, num_workers=4)
