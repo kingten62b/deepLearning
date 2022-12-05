@@ -15,8 +15,9 @@ def get_transform():
             transforms.CenterCrop(config.IMG_SIZE),
             transforms.ToTensor(),
             # 对每个像素点进行归一化
-            transforms.Normalize(mean=[0.4, 0.4, 0.4],
-                                 std=[0.2, 0.2, 0.2])
+            # transforms.Normalize(mean=[0.4, 0.4, 0.4], # 均值
+            #                      std=[0.2, 0.2, 0.2])  # 方差
+            transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
         ])
 
 def get_dataset(batch_size=10, num_workers=config.NUM_WORKERS):
@@ -36,6 +37,7 @@ def get_dataset(batch_size=10, num_workers=config.NUM_WORKERS):
                             batch_size=batch_size, 
                             shuffle=True, 
                             num_workers=num_workers)
+    print(len(train_dataset))
     print(train_dataset.class_to_idx) #查看子文件夹与标签的映射
     return train_loader, test_loader
 
