@@ -7,9 +7,11 @@ import numpy as np
 import torchvision
 from torchvision import datasets, models, transforms
 import matplotlib.pyplot as plt
-import time
-import copy
 import os
+
+'''
+网络迁移训练: 蚂蚁$蜜蜂识别器
+'''
 
 def rightness(predictions, labels):
     '''rightness 计算预测错误率的函数
@@ -58,8 +60,8 @@ val_dataset = datasets.ImageFolder(os.path.join(data_dir, 'val'),
                                         ])
                                     )
 #创建相应的数据加载器
-train_loader = torch.utils.data.DataLoader(train_dataset, batch_size = 4, shuffle = True, num_workers=4)
-val_loader = torch.utils.data.DataLoader(val_dataset, batch_size = 4, shuffle = True, num_workers=4)
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size = 4, shuffle = True, num_workers=1)
+val_loader = torch.utils.data.DataLoader(val_dataset, batch_size = 4, shuffle = True, num_workers=1)
 #读取数据中的分类类别数
 num_classes = len(train_dataset.classes)
 '''模型迁移'''
@@ -71,3 +73,42 @@ num_ftrs = net.fc.in_features       # num_ftrs存储了ResNet18最后的全连�
 net.fc = nn.Linear(num_ftrs, 2)     # 将原有的两层全连接层替换成一个输出单元为2的全连接层
 criterion = nn.CrossEntropyLoss()   # 使用交叉熵损失函数
 optimizer = optim.SGD(net.fc.parameters(), lr = 0.001, momentum=0.9) # 优化器使用带动量的随机梯度下降
+
+#建立布尔变量，判断是否可以用GPU
+use_cuda = torch.cuda.is_available()
+# use_cuda = False
+#如果可以用GPU，则设定Tensor的变量类型支持GPU
+dtype = torch.cuda.FloatTensor if use_cuda else torch.FloatTensor
+itype = torch.cuda.LongTensor if use_cuda else torch.LongTensor
+#如果存在GPU，就将网络加载到GPU上
+net = net.cuda() if use_cuda else net
+
+def train_model():
+    record = [] #记录准确率等数值的容器
+    #开始训练循环
+    num_epochs = 20 #训练20个epoch
+    net.train(True) #给网络模型做标记，说明模型在训练集上训练
+    for epoch in range(num_epochs):
+        train_rights = [] #记录训练数据集准确率的容器
+        train_losses = [] #记录训练数据损失函数的容器
+        for batch_idx, (data, target) in enumerate(train_loader): #针对容器中的每一个批进行循环
+            data, target = data.clone().detach().requires_grad_(True), target.clone().detach() #data为图像，target为标签
+            if use_cuda:    #GPU可用时，将数据复制出来，然后加载到GPU上
+                data, target = data.cuda(), target.cuda()
+            output = net(data) #完成一次预测
+            loss = criterion(output, target) #计算误差
+            loss = loss.to("cpu") if use_cuda else loss # 待计算完成后，需将数据放回CPU
+            optimizer.zero_grad() #清空梯度
+            loss.backward() #反向传播
+            optimizer.step() #一步随机梯度下降
+            #计算准确率所需数值，返回正确的数值为（正确样例数，总样本数）
+            right = rightness(output, target)
+            train_rights.append(right) #将计算结果装到列表容器中
+            train_losses.append(loss.data.numpy()) #将计算结果装到列表容器中
+            if (batch_idx + 1) % 5 == 0:
+                train_r = (sum([tup[0] for tup in train_rights]), sum([tup[1] for tup in train_rights]))
+                print('\n训练周期: {} [{:.0f}%]\tLoss: {:.6f}\t训练集正确率: {:.3f}'
+                .format(epoch+1, 100*(epoch+1)/num_epochs, loss.item(), train_r[0]/train_r[1]))
+
+if __name__=="__main__":
+    train_model()
