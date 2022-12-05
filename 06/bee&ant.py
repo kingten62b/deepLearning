@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import os
 
 '''
-网络迁移训练: 蚂蚁$蜜蜂识别器
+网络迁移训练: 蚂蚁&蜜蜂识别器
 '''
 
 def rightness(predictions, labels):
@@ -68,7 +68,7 @@ num_classes = len(train_dataset.classes)
 # net = models.resnet18(pretrained=True)    # 此属性弃用
 net = models.resnet18(weights=torchvision.models.ResNet18_Weights.IMAGENET1K_V1)
 for param in net.parameters():      # 返回的网络中所有可训练参数的集合
-    param.requires_grad = False     # 原始的ResNet中的所有参数都设置成不需要计算梯度的属性
+    param.requires_grad = True     # 原始的ResNet中的所有参数都设置成不需要计算梯度的属性
 num_ftrs = net.fc.in_features       # num_ftrs存储了ResNet18最后的全连接层的输入神经元个数
 net.fc = nn.Linear(num_ftrs, 2)     # 将原有的两层全连接层替换成一个输出单元为2的全连接层
 criterion = nn.CrossEntropyLoss()   # 使用交叉熵损失函数

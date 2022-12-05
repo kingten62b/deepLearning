@@ -10,20 +10,24 @@ import matplotlib.pyplot as plt
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # DEVICE="cpu"
 # print(DEVICE)
+dtype = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
+itype = torch.cuda.LongTensor if torch.cuda.is_available() else torch.LongTensor
 
 def train_model():
     record = [] #记录训练数据集准确率/验证集准确率的容器,用于后续绘图
     train_loader, validation_loader, test_loader = get_dataset(batch_size=config.BATCH_SIZE)
     net = Net().to(DEVICE)
+    net.train(True)
     # 使用Adam/SDG优化器
     optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
     # optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
     for epoch in range(config.EPOCHS):
         train_rights = [] #记录训练数据集准确率
         for step, (x, y) in enumerate(train_loader):
+            x, y = x.clone().detach().requires_grad_(True), y.clone().detach()
             x, y = x.to(DEVICE), y.to(DEVICE)
-            output = net(x).to(DEVICE)
-            # 使用最大似然 / log似然代价函数
+            output = net(x)
+            # 使用最大似然 / log似然s损失函数
             loss = F.nll_loss(output, y)      
             # 梯度清零
             optimizer.zero_grad()
