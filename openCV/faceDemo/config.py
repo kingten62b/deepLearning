@@ -14,9 +14,7 @@ DEFAULT_MODEL="face_modle.pkl" # 模型名称
 PROJECT_PATH = os.path.abspath(
     os.path.join(os.path.abspath(os.path.dirname(__file__)), os.pardir))
 
-# 训练集数据集
-DATA_TRAIN = os.path.join(PROJECT_PATH, "data/train")
-# 验证集数据
-DATA_VALIDATION = os.path.join(PROJECT_PATH, "data/test")
+# 数据集
+DATA_TRAIN = os.path.join(PROJECT_PATH, "data/img")
 # 模型保存地址
 DATA_MODEL = os.path.join(PROJECT_PATH, "data/model")

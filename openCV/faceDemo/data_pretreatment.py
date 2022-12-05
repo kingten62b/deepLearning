@@ -23,39 +23,34 @@ def get_transform():
 
 def get_dataset(batch_size=10, num_workers=config.NUM_WORKERS):
     data_transform = get_transform()
-    # # 图片
-    # dataset = ImageFolder(root=config.DATA_TRAIN, 
-    #                             transform=data_transform)
-    # 训练集图片
+    # 先将所有图片放入训练集，之后按比例划分
     train_dataset = ImageFolder(root=config.DATA_TRAIN, 
                                 transform=data_transform)
-    # # 验证集图片
-    # test_dataset = ImageFolder(root=config.DATA_TEST, 
-    #                             transform=data_transform)
-    # 训练数据集的加载器，自动将数据切分成批，顺序随机打乱
-    # train_loader = DataLoader(dataset=train_dataset,
-    #                             batch_size=batch_size,
-    #                             shuffle=True,
-    #                             num_workers=num_workers)
-    # test_loader = DataLoader(dataset=test_dataset, 
-    #                         batch_size=batch_size, 
-    #                         shuffle=True, 
-    #                         num_workers=num_workers)
+    # 按比例划分数据集
+    sum_size = len(train_dataset)
+    train_size = int(config.TRAIN_SCALE * sum_size)
+    validation_size = (sum_size - train_size) // 2
+    test_size = sum_size - train_size - validation_size
+    train_dataset, validation_dataset, test_dataset = torch.utils.data.random_split(train_dataset, [train_size, validation_size,test_size])
+    train_dataset, validation_dataset, test_dataset=train_dataset.dataset, validation_dataset.dataset, test_dataset.dataset
 
-    train_size = int(config.TRAIN_SCALE * len(train_dataset))
-    validation_size = (len(train_dataset) - train_size) // 2
-    test_size = len(train_dataset) - validation_size
-    train_dataset, test_dataset = torch.utils.data.random_split(train_dataset, [train_size, test_size])
+    # 数据集的加载器，顺序随机打乱
+    train_loader = DataLoader(dataset=train_dataset,
+                                batch_size=batch_size,
+                                shuffle=True,
+                                num_workers=num_workers)
+    validation_loader = DataLoader(dataset=validation_dataset, 
+                            batch_size=batch_size, 
+                            shuffle=True, 
+                            num_workers=num_workers)
+    test_loader = DataLoader(dataset=test_dataset, 
+                            batch_size=batch_size, 
+                            shuffle=True, 
+                            num_workers=num_workers)
 
-    train_dataset=train_dataset.dataset#这行很重要
-    for images, labels in train_dataset.imgs:
-        print(images)
-        print(labels)
-
-    print(len(train_dataset))
+    print("sum_dataset:\t\t",sum_size, "\ntrain_dataset:\t\t",train_size, "\nvalidation_dataset:\t",validation_size, "\ntest_dataset:\t\t",test_size)
     print(train_dataset.class_to_idx) #查看子文件夹与标签的映射
-    # return train_loader, test_loader
+    return train_loader, validation_loader, test_loader
 
 if __name__=="__main__":
-    # train_loader, test_loader = get_dataset()
     get_dataset()
