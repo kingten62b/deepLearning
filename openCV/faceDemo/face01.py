@@ -7,8 +7,6 @@ import config
 人脸检测,收集数据集
 '''
 
-sum = 0 # 记录采集到的人脸数
-
 def catch_video(tag, window_name='catch face', camera_idx=0):
     """ catch_video 获取来自摄像头的视频流
 
@@ -79,10 +77,7 @@ def save_face(image, tag, num):
     # 图片文件名
     img_name = os.path.join(config.DATA_TRAIN, str(tag), '{}_{}.jpg'.format(int(time.time()), num))
     # 保存人脸图像到指定的位置
-    if cv2.imwrite(img_name, image):
-        global sum 
-        sum += 1
-        print("已收集:",sum)
+    cv2.imwrite(img_name, image)
 
 if __name__ == '__main__':
     catch_video("liu_jia_tai")
