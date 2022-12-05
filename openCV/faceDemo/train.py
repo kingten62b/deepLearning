@@ -28,7 +28,7 @@ def train_model():
             x, y = x.to(DEVICE), y.to(DEVICE)
             output = net(x)
             # 使用最大似然 / log似然s损失函数
-            loss = F.nll_loss(output, y)      
+            loss = F.nll_loss(output, y)
             # 梯度清零
             optimizer.zero_grad()
             # 反向传播
