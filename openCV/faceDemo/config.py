@@ -8,6 +8,7 @@ TRAIN_SCALE=0.8 # 训练集所占比例
 BATCH_SIZE=20   # 每次迭代使用多少个样本
 EPOCHS=25       # 训练的总循环周期
 IMG_SIZE=64     # 输入图像尺寸
+# IMG_SIZE=224     # 输入图像尺寸
 DEFAULT_MODEL="face_modle.pkl" # 模型名称
 
 # 工作区文件夹路径

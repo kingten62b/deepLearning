@@ -10,9 +10,9 @@ import torch
 
 def get_transform():
     return transforms.Compose([
-            # 图像缩放到128 x 128
+            # 图像缩放到64 x 64
             transforms.Resize(config.IMG_SIZE),
-            # 中心裁剪 128 x 128
+            # 中心裁剪 64 x 64
             transforms.CenterCrop(config.IMG_SIZE),
             transforms.ToTensor(),
             # 对每个像素点进行归一化
