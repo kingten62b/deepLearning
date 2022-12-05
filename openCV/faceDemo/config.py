@@ -5,8 +5,8 @@ import os
 
 NUM_WORKERS=1   # 几个线程
 TRAIN_SCALE=0.8 # 训练集所占比例
-BATCH_SIZE=20   # 每次迭代使用多少个样本
-EPOCHS=25       # 训练的总循环周期
+BATCH_SIZE=10   # 每次迭代使用多少个样本
+EPOCHS=50       # 训练的总循环周期
 IMG_SIZE=64     # 输入图像尺寸
 DEFAULT_MODEL="face_modle.pkl" # 模型名称
 
