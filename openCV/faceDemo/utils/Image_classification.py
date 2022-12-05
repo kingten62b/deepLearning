@@ -8,6 +8,7 @@ ls = os.listdir(INPUT_PATH)
 print ("文件总数：",len(ls))
 
 # 提取人名并去重
+# Aaron_Eckhart_0001.jpg --> Aaron_Eckhart
 name = set()
 for each in ls:
     each = each[:(each.rindex('_'))] # 将文件名按人名切分

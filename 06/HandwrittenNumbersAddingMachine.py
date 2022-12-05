@@ -64,19 +64,12 @@ val_loader = torch.utils.data.DataLoader(val_dataset, batch_size = 4, shuffle = 
 num_classes = len(train_dataset.classes)
 '''模型迁移'''
 net = models.resnet18(pretrained=True)
-
-num_ftrs = net.fc.in_features
-net.fc = nn.Linear(num_ftrs, 2)
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(net.parameters(), lr = 0.0001, momentum=0.9)
-
-net = models.resnet18(pretrained=True)
-for param in net.parameters():
-    param.requires_grad = False
-num_ftrs = net.fc.in_features
-net.fc = nn.Linear(num_ftrs, 2)
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(net.fc.parameters(), lr = 0.001, momentum=0.9)
+for param in net.parameters():      # 返回的网络中所有可训练参数的集合
+    param.requires_grad = False     # 原始的ResNet中的所有参数都设置成不需要计算梯度的属性
+num_ftrs = net.fc.in_features       # num_ftrs存储了ResNet18最后的全连接层的输入神经元个数
+net.fc = nn.Linear(num_ftrs, 2)     # 将原有的两层全连接层替换成一个输出单元为2的全连接层
+criterion = nn.CrossEntropyLoss()   # 使用交叉熵损失函数
+optimizer = optim.SGD(net.fc.parameters(), lr = 0.001, momentum=0.9) # 优化器使用带动量的随机梯度下降
 
 #建立布尔变量，判断是否可以用GPU
 use_cuda = torch.cuda.is_available()

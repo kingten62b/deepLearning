@@ -7,11 +7,10 @@ import os, time
 from data_pretreatment import  get_transform
 from PIL import Image, ImageDraw ,ImageFont
 
-# FACE_LABEL = {
-#     0: "liu_jia_tai",
-#     1 : "wu_jin",
-#     2: "wu_zhi_hao"
-# }
+'''
+人脸检测,标注人名
+'''
+
 FACE_LABEL = {
      0: "刘家泰",
      1: " 罗珍珍",
