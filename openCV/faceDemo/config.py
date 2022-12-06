@@ -4,13 +4,12 @@ import os
 '''
 
 '''num_worker设为0,意味着每一轮迭代时,dataloader不再有自主加载数据到RAM这一步骤,
-而是在RAM中找batch,找不到时再加载相应的batch。缺点当然是速度更慢。'''
-# NUM_WORKERS=1   # dataloader线程数
+而是在RAM中找batch,找不到时再加载相应的batch'''
 NUM_WORKERS=0   # dataloader线程数
 
 TRAIN_SCALE=0.8 # 训练集所占比例
-BATCH_SIZE=20   # 每次迭代使用多少个样本
-EPOCHS=30       # 训练的总循环周期
+BATCH_SIZE=10   # 每次迭代使用多少个样本
+EPOCHS=20       # 训练的总循环周期
 IMG_SIZE=64     # 输入图像尺寸
 # IMG_SIZE=224     # 输入图像尺寸 (train_test使用)
 DEFAULT_MODEL="face_modle.pkl" # 模型名称

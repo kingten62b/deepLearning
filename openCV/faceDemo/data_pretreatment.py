@@ -24,15 +24,14 @@ def get_transform():
 def get_dataset(batch_size=10, num_workers=config.NUM_WORKERS):
     data_transform = get_transform()
     # 先将所有图片放入训练集，之后按比例划分
-    train_dataset = ImageFolder(root=config.DATA_TRAIN, 
+    all_dataset = ImageFolder(root=config.DATA_TRAIN, 
                                 transform=data_transform)
     # 按比例划分数据集
-    sum_size = len(train_dataset)
+    sum_size = len(all_dataset)
     train_size = int(config.TRAIN_SCALE * sum_size)
     validation_size = (sum_size - train_size) // 2
     test_size = sum_size - train_size - validation_size
-    train_dataset, validation_dataset, test_dataset = torch.utils.data.random_split(train_dataset, [train_size, validation_size,test_size])
-    train_dataset, validation_dataset, test_dataset=train_dataset.dataset, validation_dataset.dataset, test_dataset.dataset
+    train_dataset, validation_dataset, test_dataset = torch.utils.data.random_split(all_dataset, [train_size, validation_size,test_size])
 
     # 数据集的加载器，顺序随机打乱
     train_loader = DataLoader(dataset=train_dataset,
@@ -48,8 +47,8 @@ def get_dataset(batch_size=10, num_workers=config.NUM_WORKERS):
                             shuffle=True, 
                             num_workers=num_workers)
 
-    print("sum_dataset:\t\t",sum_size, "\ntrain_dataset:\t\t",train_size, "\nvalidation_dataset:\t",validation_size, "\ntest_dataset:\t\t",test_size)
-    print(train_dataset.class_to_idx) #查看子文件夹与标签的映射
+    print("sum_dataset:\t\t",len(all_dataset), "\ntrain_dataset:\t\t",len(train_dataset), "\nvalidation_dataset:\t",len(validation_dataset), "\ntest_dataset:\t\t",len(test_dataset))
+    print(all_dataset.class_to_idx) #查看子文件夹与标签的映射
     return train_loader, validation_loader, test_loader
 
 if __name__=="__main__":
