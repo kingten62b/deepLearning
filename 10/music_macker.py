@@ -134,7 +134,7 @@ class LSTMNetwork(nn.Module):
         out = self.fc(output)
         #out的尺寸为：batch_size, output_size
         #将out的最后一个维度分割成3份x, y, z，分别对应了对note，velocity以及time的预测
-        # note [0]存音符（note） note [1]存速度（velocity） note [2]存距离上一个message的时间间隔 
+        # 音符(note) 速度(velocity) 存距离上一个message的时间间隔(time) 
         x = self.softmax(out[:, :89])
         y = self.softmax(out[:, 89: 89 + 128])
         z = self.softmax(out[:, 89 + 128:])
