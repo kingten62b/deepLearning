@@ -38,7 +38,7 @@ def train_model():
             # 清除显存
             # torch.cuda.empty_cache()
 
-            if (step + 1) % 5 == 0:
+            if (step + 1) % 10 == 0:
                 with torch.no_grad(): # 关闭自动求导,节约显存或内存
                     net.eval() #将模型标志为测试状态，关闭dropout的作用
                     train_rights.append(rightness(output, y)) #将计算结果装到列表容器train_rights中
