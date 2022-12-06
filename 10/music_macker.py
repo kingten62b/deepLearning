@@ -174,7 +174,7 @@ def rightness(predictions, labels):
 #定义一个LSTM，其中输入层和输出层的单元个数取决于每个变量的类型取值范围
 lstm = LSTMNetwork(89 + 128 + 12, 128, 89 + 128 + 12)
 optimizer = optim.Adam(lstm.parameters(), lr=0.001)
-num_epochs = 100
+num_epochs = 100        # 训练的总循环周期
 train_losses = []
 valid_losses = []
 records = []
@@ -195,35 +195,35 @@ for epoch in range(num_epochs):
         train_loss.append(loss.data.numpy()) #记录loss
         loss.backward() #反向传播
         optimizer.step() #梯度更新
-    if 0 == 0:
-        #在校验集上运行一遍，并计算在校验集上的分类准确率
-        valid_loss = []
-        lstm.eval() #将模型标志为测试状态，关闭dropout的作用
-        rights = []
-        #遍历加载器加载进来的每一个元素
-        for batch, data in enumerate(valid_loader):
-            init_hidden = lstm.initHidden(len(data[0]))
-            #完成LSTM的计算
-            # x, y = Variable(data[0]), Variable(data[1])
-            x, y = data[0], data[1]
-            #x的尺寸：batch_size, length_sequence, input_size
-            #y的尺寸：batch_size, (data_dimension1=89+ data_dimension2=128+ data_dimension3=12)
-            outputs = lstm(x, init_hidden)
-            #outputs: (batch_size*89, batch_size*128, batch_size*11)
-            loss = criterion(outputs, y)
-            valid_loss.append(loss.data.numpy())
-            #计算每个指标的分类准确度
-            right1 = rightness(outputs[0], y[:, 0])
-            right2 = rightness(outputs[1], y[:, 1])
-            right3 = rightness(outputs[2], y[:, 2])
-            rights.append((right1[0] + right2[0] + right3[0]) * 1.0 / (right1[1] + right2[1] + right3[1]))
-        #打印结果
-        print('第{}轮，训练Loss：{:.2f}，校验Loss：{:.2f}，校验准确度：{:.2f}'.format(epoch,
-                np.mean(train_loss),
-                np.mean(valid_loss),
-                np.mean(rights)
-                ))
-        records.append([np.mean(train_loss), np.mean(valid_loss), np.mean(rights)])
+# if 0 == 0:
+    #在校验集上运行一遍，并计算在校验集上的分类准确率
+    valid_loss = []
+    lstm.eval() #将模型标志为测试状态，关闭dropout的作用
+    rights = []
+    #遍历加载器加载进来的每一个元素
+    for batch, data in enumerate(valid_loader):
+        init_hidden = lstm.initHidden(len(data[0]))
+        #完成LSTM的计算
+        # x, y = Variable(data[0]), Variable(data[1])
+        x, y = data[0], data[1]
+        #x的尺寸：batch_size, length_sequence, input_size
+        #y的尺寸：batch_size, (data_dimension1=89+ data_dimension2=128+ data_dimension3=12)
+        outputs = lstm(x, init_hidden)
+        #outputs: (batch_size*89, batch_size*128, batch_size*11)
+        loss = criterion(outputs, y)
+        valid_loss.append(loss.data.numpy())
+        #计算每个指标的分类准确度
+        right1 = rightness(outputs[0], y[:, 0])
+        right2 = rightness(outputs[1], y[:, 1])
+        right3 = rightness(outputs[2], y[:, 2])
+        rights.append((right1[0] + right2[0] + right3[0]) * 1.0 / (right1[1] + right2[1] + right3[1]))
+    #打印结果
+    print('第{}轮，训练Loss：{:.2f}，校验Loss：{:.2f}，校验准确度：{:.2f}'.format(epoch,
+            np.mean(train_loss),
+            np.mean(valid_loss),
+            np.mean(rights)
+            ))
+    records.append([np.mean(train_loss), np.mean(valid_loss), np.mean(rights)])
 
 #绘制训练过程中的Loss曲线
 a = [i[0] for i in records]

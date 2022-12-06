@@ -40,6 +40,7 @@ def train_model():
 
             if (step + 1) % 5 == 0:
                 with torch.no_grad(): # 关闭自动求导,节约显存或内存
+                    net.eval() #将模型标志为测试状态，关闭dropout的作用
                     train_rights.append(rightness(output, y)) #将计算结果装到列表容器train_rights中
                     train_r = (sum([tup[0] for tup in train_rights]), sum([tup[1] for tup in train_rights]))
                     #开始在验证集上做循环，计算验证集上的准确度
