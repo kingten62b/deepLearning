@@ -11,7 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 # %matplotlib inline
 
-INPUT_PATH = "F:\\data\\mid_music\\千本樱.mid"
+INPUT_PATH = "F:\\data\\mid_music\\krebs.mid"
 OUT_PATH = "F:\\data\\mid_music\\output.mid"
 
 #从硬盘中读入MIDI音乐文件
