@@ -4,6 +4,7 @@ import torch
 import torch.utils.data as DataSet
 import torch.nn as nn
 import torch.optim as optim
+from torch.autograd import Variable
 #导入MIDI音乐处理的包
 from mido import MidiFile, MidiTrack, Message
 #导入计算与绘图必需的包
@@ -205,8 +206,8 @@ for epoch in range(num_epochs):
     for batch, data in enumerate(valid_loader):
         init_hidden = lstm.initHidden(len(data[0]))
         #完成LSTM的计算
-        # x, y = Variable(data[0]), Variable(data[1])
-        x, y = data[0], data[1]
+        x, y = Variable(data[0]), Variable(data[1])
+        # x, y = data[0], data[1]
         #x的尺寸：batch_size, length_sequence, input_size
         #y的尺寸：batch_size, (data_dimension1=89+ data_dimension2=128+ data_dimension3=12)
         outputs = lstm(x, init_hidden)

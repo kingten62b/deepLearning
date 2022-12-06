@@ -3,6 +3,7 @@
 import torch
 import torch.nn as nn
 import torch.optim
+from torch.autograd import Variable
 from collections import Counter #搜集器，可以让统计词频更简单
 #绘图、计算用的程序包
 import matplotlib
@@ -59,7 +60,7 @@ class SimpleRNN(nn.Module):
         self.hidden_size = hidden_size
         self.num_layers = num_layers
         #一个embedding层
-        self.embedding = nn.Embedding(output_size, hidden_size)
+        self.embedding = nn.Embedding(input_size, hidden_size)
         #PyTorch的RNN层，batch_first标识可以让输入的张量的第一个维度表示batch指标
         self.rnn = nn.RNN(hidden_size, hidden_size, num_layers, batch_first = True)
         #输出的全连接层
@@ -181,7 +182,7 @@ for n in range(20):
     for t in range(len(inputs) - 1):
         x = Variable(torch.LongTensor([inputs[t]]).unsqueeze(0))
         #x尺寸：batch_size = 1, time_steps = 1, data_dimension = 1
-        y = Variable(torch.LongTensor([inputs[t + 1]]))
+        y =Variable(torch.LongTensor([inputs[t + 1]]))
         #y尺寸：batch_size = 1, data_dimension = 1
         output, hidden = rnn(x, hidden)
         #output尺寸：batch_size, output_size = 3
