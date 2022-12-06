@@ -11,9 +11,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 # %matplotlib inline
 
+INPUT_PATH = "F:\\data\\mid_music\\千本樱.mid"
+OUT_PATH = "F:\\data\\mid_music\\output.mid"
+
 #从硬盘中读入MIDI音乐文件
-# mid = MidiFile('./music/krebs.mid') #a Mozart piece
-mid = MidiFile('F:\\data\\mid_music\\krebs.mid') #a Mozart piece
+mid = MidiFile(INPUT_PATH)      #a Mozart piece
 notes = []
 time = float(0)
 prev = float(0)
@@ -195,7 +197,6 @@ for epoch in range(num_epochs):
         train_loss.append(loss.data.numpy()) #记录loss
         loss.backward() #反向传播
         optimizer.step() #梯度更新
-# if 0 == 0:
     #在校验集上运行一遍，并计算在校验集上的分类准确率
     valid_loss = []
     lstm.eval() #将模型标志为测试状态，关闭dropout的作用
@@ -234,3 +235,69 @@ plt.plot(b, '-', label = 'Validation Loss') # 校验Loss
 plt.plot(c, '-', label = '10 * Accuracy')   # 校验准确度
 plt.legend()
 plt.show()
+
+
+'''05. 序列生成'''
+#生成3000步
+predict_steps = 3000
+#初始时刻，将seed（一段种子音符，即开始读入的音乐文件）赋给x
+x = seed
+#将数据扩充为合适的形式
+x = np.expand_dims(x, axis = 0)
+#现在x的尺寸为：batch=1, time_step =30, data_dim = 229
+lstm.eval()
+initi = lstm.initHidden(1)
+predictions = []
+#开始每一步的迭代
+for i in range(predict_steps):
+    #根据前n_prev预测后面的一个音符
+    xx = torch.FloatTensor(np.array(x, dtype = float))
+    preds = lstm(xx, initi)
+    #返回预测的note，velocity，time的模型预测概率对数
+    a,b,c = preds
+    #a的尺寸为：batch=1*data_dim=89, b为1*128，c为1*11
+    #将概率对数转化为随机的选择
+    ind1 = torch.multinomial(a.view(-1).exp(), 89 )
+    ind2 = torch.multinomial(b.view(-1).exp(), 128)
+    ind3 = torch.multinomial(c.view(-1).exp(), 11 )
+    ind1 = ind1.data.numpy()[0] #0-89中的整数
+    ind2 = ind2.data.numpy()[0] #0-128中的整数
+    ind3 = ind3.data.numpy()[0] #0-11中的整数
+    #将选择转换为正确的音符等数值，注意time分为11类，第一类为0这个特殊的类，其余按照区间分类
+    note = [ind1 + 24, ind2, 0 if ind3 ==0 else ind3 * interval + min_t]
+    #将预测的内容进行存储
+    predictions.append(note)
+    #将新的预测内容再次转变为输入数据，准备输入LSTM
+    slot = np.zeros(89 + 128 + 12, dtype = int)
+    slot[ind1] = 1
+    slot[89 + ind2] = 1
+    slot[89 + 128 + ind3] = 1
+    slot1 = np.expand_dims(slot, axis = 0)
+    slot1 = np.expand_dims(slot1, axis = 0)
+    #slot1的数据格式为：batch=1*time=1*data_dim=229
+    #x拼接上新的数据
+    x = np.concatenate((x, slot1), 1)
+    #现在x的尺寸为：batch_size = 1 * time_step = 31 * data_dim =229
+    #滑动窗口往前平移一次
+    x = x[:, 1:, :]
+    #现在x的尺寸为：batch_size = 1 * time_step = 30 * data_dim = 229
+
+#将生成的序列转化为MIDI的消息，并保存MIDI音乐
+mid = MidiFile()
+track = MidiTrack()
+mid.tracks.append(track)
+for i, note in enumerate(predictions):
+    #在note一开始插入一个147，表示打开note_on
+    note = np.insert(note, 0, 147)
+    #将整数转化为字节
+    bytes = note.astype(int)
+    #创建一个message
+    msg = Message.from_bytes(bytes[0:3])
+    #0.001025为任意取值，可以调节音乐的速度
+    #由于生成的time都是一系列的间隔时间，转化为msg后时间尺度过小，因此需要调节放大
+    time = int(note[3]/0.001025)
+    msg.time = time
+    #将message添加到音轨中
+    track.append(msg)
+#保存文件
+mid.save(OUT_PATH)
