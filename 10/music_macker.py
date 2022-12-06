@@ -229,8 +229,8 @@ for epoch in range(num_epochs):
 a = [i[0] for i in records]
 b = [i[1] for i in records]
 c = [i[2] * 10 for i in records]
-plt.plot(a, '-', label = 'Train Loss')
-plt.plot(b, '-', label = 'Validation Loss')
-plt.plot(c, '-', label = '10 * Accuracy')
+plt.plot(a, '-', label = 'Train Loss')      # 训练Loss
+plt.plot(b, '-', label = 'Validation Loss') # 校验Loss
+plt.plot(c, '-', label = '10 * Accuracy')   # 校验准确度
 plt.legend()
 plt.show()
