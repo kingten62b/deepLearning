@@ -10,8 +10,6 @@ import matplotlib.pyplot as plt
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # DEVICE="cpu"
 # print(DEVICE)
-# dtype = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
-# itype = torch.cuda.LongTensor if torch.cuda.is_available() else torch.LongTensor
 
 def train_model():
     record = [] #记录训练数据集准确率/验证集准确率的容器,用于后续绘图
@@ -24,7 +22,6 @@ def train_model():
     for epoch in range(config.EPOCHS):
         train_rights = [] #记录训练数据集准确率
         for step, (x, y) in enumerate(train_loader):
-            x, y = x.clone().detach().requires_grad_(True), y.clone().detach()
             x, y = x.to(DEVICE), y.to(DEVICE)
             output = net(x)
             # 使用最大似然 / log似然s损失函数

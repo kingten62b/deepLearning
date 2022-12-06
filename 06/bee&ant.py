@@ -92,7 +92,8 @@ def train_model():
         train_rights = [] #记录训练数据集准确率的容器
         train_losses = [] #记录训练数据损失函数的容器
         for batch_idx, (data, target) in enumerate(train_loader): #针对容器中的每一个批进行循环
-            data, target = data.clone().detach().requires_grad_(True), target.clone().detach() #data为图像，target为标签
+            # data, target = data.clone().detach().requires_grad_(True), target.clone().detach() #data为图像，target为标签
+            data, target = data.cuda(), target.cuda() #data为图像，target为标签
             if use_cuda:    #GPU可用时，将数据复制出来，然后加载到GPU上
                 data, target = data.cuda(), target.cuda()
             output = net(data) #完成一次预测

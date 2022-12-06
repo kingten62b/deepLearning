@@ -34,11 +34,10 @@ def train_model():
     for epoch in range(config.EPOCHS):
         train_rights = [] #记录训练数据集准确率
         for step, (x, y) in enumerate(train_loader):
-            x, y = x.clone().detach().requires_grad_(True), y.clone().detach()
             x, y = x.to(DEVICE), y.to(DEVICE)
             output = net(x)
             # 使用最大似然 / log似然s损失函数
-            loss = F.nll_loss(output, y)      
+            loss = criterion(output, y)      
             # 梯度清零
             optimizer.zero_grad()
             # 反向传播
