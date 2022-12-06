@@ -203,7 +203,8 @@ for epoch in range(num_epochs):
         for batch, data in enumerate(valid_loader):
             init_hidden = lstm.initHidden(len(data[0]))
             #完成LSTM的计算
-            x, y = Variable(data[0]), Variable(data[1])
+            # x, y = Variable(data[0]), Variable(data[1])
+            x, y = data(data[0]), data(data[1])
             #x的尺寸：batch_size, length_sequence, input_size
             #y的尺寸：batch_size, (data_dimension1=89+ data_dimension2=128+ data_dimension3=12)
             outputs = lstm(x, init_hidden)
