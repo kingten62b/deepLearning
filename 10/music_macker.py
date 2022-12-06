@@ -15,7 +15,7 @@ INPUT_PATH = "F:\\data\\mid_music\\krebs.mid"
 OUT_PATH = "F:\\data\\mid_music\\output.mid"
 
 #从硬盘中读入MIDI音乐文件
-mid = MidiFile(INPUT_PATH)      #a Mozart piece
+mid = MidiFile(INPUT_PATH)
 notes = []
 time = float(0)
 prev = float(0)
