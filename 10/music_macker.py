@@ -98,23 +98,23 @@ batch_size = 30
 #形成训练集
 train_ds = DataSet.TensorDataset(torch.FloatTensor(np.array(X, dtype = float)), torch.LongTensor(np.array(Y)))
 #形成数据加载器
-train_loader = DataSet.DataLoader(train_ds, batch_size = batch_size, shuffle = True, num_workers=4)
+train_loader = DataSet.DataLoader(train_ds, batch_size = batch_size, shuffle = True, num_workers=0)
 #校验数据
 valid_ds = DataSet.TensorDataset(torch.FloatTensor(np.array(validX, dtype = float)), torch.LongTensor(np.array(validY)))
-valid_loader = DataSet.DataLoader(valid_ds, batch_size = batch_size, shuffle = True, num_workers=4)
+valid_loader = DataSet.DataLoader(valid_ds, batch_size = batch_size, shuffle = True, num_workers=0)
 
 class LSTMNetwork(nn.Module):
     def __init__(self, input_size, hidden_size, out_size, n_layers=1):
         super(LSTMNetwork, self).__init__()
-        self.n_layers = n_layers
-        self.hidden_size = hidden_size
-        self.out_size = out_size
+        self.n_layers = n_layers        # 网络层数 = 1
+        self.hidden_size = hidden_size  # 隐藏记忆单元个数
+        self.out_size = out_size        # 输出维度
         #一层LSTM单元
         self.lstm = nn.LSTM(input_size, hidden_size, n_layers, batch_first = True)
         #一个Dropout部件，以0.2的概率dropout
         self.dropout = nn.Dropout(0.2)
         #一个全连接层
-        self.fc = nn.Linear(hidden_size, out_size)
+        self.fc = nn.Linear(hidden_size, out_size)  # 输出层
         #对数Softmax层
         self.softmax = nn.LogSoftmax(dim=1)
 
@@ -134,6 +134,7 @@ class LSTMNetwork(nn.Module):
         out = self.fc(output)
         #out的尺寸为：batch_size, output_size
         #将out的最后一个维度分割成3份x, y, z，分别对应了对note，velocity以及time的预测
+        # note [0]存音符（note） note [1]存速度（velocity） note [2]存距离上一个message的时间间隔 
         x = self.softmax(out[:, :89])
         y = self.softmax(out[:, 89: 89 + 128])
         z = self.softmax(out[:, 89 + 128:])
@@ -204,7 +205,7 @@ for epoch in range(num_epochs):
             init_hidden = lstm.initHidden(len(data[0]))
             #完成LSTM的计算
             # x, y = Variable(data[0]), Variable(data[1])
-            x, y = data(data[0]), data(data[1])
+            x, y = data[0], data[1]
             #x的尺寸：batch_size, length_sequence, input_size
             #y的尺寸：batch_size, (data_dimension1=89+ data_dimension2=128+ data_dimension3=12)
             outputs = lstm(x, init_hidden)
