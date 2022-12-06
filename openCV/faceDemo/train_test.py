@@ -27,7 +27,7 @@ net.to(DEVICE)
 def train_model():
     record = [] #记录训练数据集准确率/验证集准确率的容器,用于后续绘图
     train_loader, validation_loader, test_loader = get_dataset(batch_size=config.BATCH_SIZE)
-    net.train(True)
+    net.train()
     # 使用Adam/SDG优化器
     optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
     # optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9)

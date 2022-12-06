@@ -68,6 +68,7 @@ def predict_model(image):
     image = data_transform(image)
     image = image.view(-1, 3, config.IMG_SIZE, config.IMG_SIZE)
     net = Net().to(DEVICE)
+    net.eval() #将模型标志为测试状态，关闭dropout的作用
     # 加载模型参数权重
     net.load_state_dict(torch.load(os.path.join(config.DATA_MODEL, config.DEFAULT_MODEL)))
     output = net(image.to(DEVICE))
