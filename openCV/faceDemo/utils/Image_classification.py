@@ -21,6 +21,6 @@ for each in name:
 # 将图片复制到对应文件夹
 for each in ls:
     img_from_path = os.path.join(INPUT_PATH, each)
-    img_to_path = os.path.join(OUTPUT_PATH, each[:(each.rindex('_'))], each)
+    img_to_path = c
     print(img_from_path,'\n' ,img_to_path)
     shutil.copy(img_from_path, img_to_path)

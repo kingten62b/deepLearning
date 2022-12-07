@@ -14,14 +14,13 @@ from data_pretreatment import get_dataset
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # DEVICE="cpu"
 
-'''模型迁移,input244*244'''
+'''模型迁移'''
 net = models.resnet18(weights=torchvision.models.ResNet18_Weights.IMAGENET1K_V1)
 for param in net.parameters():      # 返回的网络中所有可训练参数的集合
     param.requires_grad = False     # 原始的ResNet中的所有参数都设置成不需要计算梯度的属性
 num_ftrs = net.fc.in_features       # num_ftrs存储了ResNet18最后的全连接层的输入神经元个数
-net.fc = nn.Linear(num_ftrs, 4)     # 将原有的两层全连接层替换成一个输出单元为2的全连接层
+net.fc = nn.Linear(num_ftrs, 36)     # 将原有的两层全连接层替换成一个输出单元为2的全连接层
 criterion = nn.CrossEntropyLoss()   # 使用交叉熵损失函数
-# optimizer = optim.SGD(net.fc.parameters(), lr = 0.001, momentum=0.9) # 优化器使用带动量的随机梯度下降
 net.to(DEVICE)
 
 def train_model():
@@ -36,7 +35,7 @@ def train_model():
         for step, (x, y) in enumerate(train_loader):
             x, y = x.to(DEVICE), y.to(DEVICE)
             output = net(x)
-            # 使用最大似然 / log似然s损失函数
+            # 损失函数
             loss = criterion(output, y)      
             # 梯度清零
             optimizer.zero_grad()
