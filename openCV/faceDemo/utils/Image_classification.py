@@ -18,7 +18,7 @@ print("人脸总数：",len(name))
 for each in name:
     dir_path = os.path.join(OUTPUT_PATH, each)
     os.makedirs(dir_path)
-
+# 将图片复制到对应文件夹
 for each in ls:
     img_from_path = os.path.join(INPUT_PATH, each)
     img_to_path = os.path.join(OUTPUT_PATH, each[:(each.rindex('_'))], each)
