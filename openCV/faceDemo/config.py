@@ -26,7 +26,7 @@ PROJECT_PATH = os.path.abspath(
 # # 数据集  人脸识别 图片总数731 人数6
 # DATA_TRAIN = os.path.join(PROJECT_PATH, "F:\\data\\人脸识别数据集\\images\\face")
 
-# 数据集  果蔬分类 图片总数3581 种类36
+# 数据集  果蔬分类 图片总数3355 种类36
 DATA_TRAIN = os.path.join(PROJECT_PATH, "F:\\data\\果蔬分类")
 
 # 模型保存地址
