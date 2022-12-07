@@ -70,7 +70,7 @@ def test(model, test_loader):
             pred = output.max(1, keepdim=True)[1]
             correct += pred.eq(y.view_as(pred)).sum().item()
     test_loss /= len(test_loader.dataset)
-    print('\ntest loss={:.4f}, \t测试集正确率={:.3f}%\n'.format(100 * test_loss, float(correct) / len(test_loader.dataset)))
+    print('\ntest loss={:.4f}, \t测试集正确率={:.3f}%\n'.format(test_loss, 100 * float(correct) / len(test_loader.dataset)))
 
 if __name__=="__main__":
     record = train_model()

@@ -17,11 +17,11 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 '''模型迁移,input244*244'''
 net = models.resnet18(weights=torchvision.models.ResNet18_Weights.IMAGENET1K_V1)
 for param in net.parameters():      # 返回的网络中所有可训练参数的集合
-    param.requires_grad = True     # 原始的ResNet中的所有参数都设置成不需要计算梯度的属性
+    param.requires_grad = False     # 原始的ResNet中的所有参数都设置成不需要计算梯度的属性
 num_ftrs = net.fc.in_features       # num_ftrs存储了ResNet18最后的全连接层的输入神经元个数
-net.fc = nn.Linear(num_ftrs, 4025)     # 将原有的两层全连接层替换成一个输出单元为2的全连接层
+net.fc = nn.Linear(num_ftrs, 4)     # 将原有的两层全连接层替换成一个输出单元为2的全连接层
 criterion = nn.CrossEntropyLoss()   # 使用交叉熵损失函数
-optimizer = optim.SGD(net.fc.parameters(), lr = 0.001, momentum=0.9) # 优化器使用带动量的随机梯度下降
+# optimizer = optim.SGD(net.fc.parameters(), lr = 0.001, momentum=0.9) # 优化器使用带动量的随机梯度下降
 net.to(DEVICE)
 
 def train_model():
@@ -29,8 +29,8 @@ def train_model():
     train_loader, validation_loader, test_loader = get_dataset(batch_size=config.BATCH_SIZE)
     net.train()
     # 使用Adam/SDG优化器
-    # optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
-    optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
+    optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
+    # optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
     for epoch in range(config.EPOCHS):
         train_rights = [] #记录训练数据集准确率
         for step, (x, y) in enumerate(train_loader):
@@ -60,7 +60,7 @@ def train_model():
                         val_rights.append(rightness(output, y)) #将计算结果装到列表容器val_rights中
                     val_r = (sum([tup[0] for tup in val_rights]), sum([tup[1] for tup in val_rights]))
 
-                    print('训练周期: {} [{:.0f}%]\tLoss: {:.6f}\t训练集正确率: {:.3f}\t验证集正确率:{:.3f}'
+                    print('训练周期: {} [{:.0f}%]\tLoss: {:.6f}\t训练集正确率: {:.3f}%\t验证集正确率:{:.3f}%'
                         .format(epoch+1, 100*(epoch+1)/config.EPOCHS, loss.item(), 
                                 100*train_r[0]/train_r[1],
                                 100*val_r[0]/val_r[1]))
@@ -82,7 +82,7 @@ def test(model, test_loader):
             pred = output.max(1, keepdim=True)[1]
             correct += pred.eq(y.view_as(pred)).sum().item()
     test_loss /= len(test_loader.dataset)
-    print('\ntest loss={:.4f}, \t测试集正确率={:.3f}\n'.format(test_loss, float(correct) / len(test_loader.dataset)))
+    print('\ntest loss={:.4f}, \t测试集正确率={:.3f}%\n'.format(test_loss, 100 * float(correct) / len(test_loader.dataset)))
 
 if __name__=="__main__":
     record = train_model()
