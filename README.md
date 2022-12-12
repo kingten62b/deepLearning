@@ -54,3 +54,6 @@ openCV
 │  ├─utils  
 │  │      del_RGBA.py       // 过滤数据集中非RGB格式图片(部分数据集使用)  
 │  │      Image_classification.py   // 数据集分类整理成子文件夹(部分数据集使用)  
+
+###########鸣谢:  
+alanzhu  https://github.com/sealzjh/face_recognize
