@@ -1,6 +1,7 @@
 import numpy as np
 import cv2 as cv
 cap = cv.VideoCapture(0)
+# cap = cv.VideoCapture("F:/t3856/Videos/984714877/1/984714877_1_0.mp4")
 if not cap.isOpened():
     print("Cannot open camera")
     exit()

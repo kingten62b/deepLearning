@@ -11,11 +11,13 @@ from PIL import Image, ImageDraw ,ImageFont
 人脸检测,标注人名
 '''
 
-FACE_LABEL = {
-     0: "刘家泰",
-     1: "吴进",
-     2: "吴志豪"
-}
+# FACE_LABEL = {
+#      0: "刘家泰",
+#      1: "吴进",
+#      2: "吴志豪"
+# }
+
+FACE_LABEL = {0: '坤坤', 1: '刘家泰', 2: '吴进',3 : '吴志豪'}
 
 # 检查是否有GPU
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -89,5 +91,5 @@ def paint_opencv(im, chinese, pos, color):
     return img
 
 if __name__ == '__main__':
-    recognize_video()
-    # recognize_video(camera_idx="F:/t3856/Videos/test.mp4")
+    # recognize_video()
+    recognize_video(camera_idx="F:/t3856/Videos/984714877/1/984714877_1_0.mp4")
