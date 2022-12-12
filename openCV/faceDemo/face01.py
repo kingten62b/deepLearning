@@ -74,11 +74,12 @@ def catch_face(frame, tag):
 def save_face(image, tag, num):
     # DATA_TRAIN为抓取的人脸存放目录，如果目录不存在则创建
     os.makedirs(os.path.join(config.DATA_TRAIN, str(tag)), exist_ok=True)
-    # 图片文件名
+    # 图片路径/文件名
     img_name = os.path.join(config.DATA_TRAIN, str(tag), '{}_{}.jpg'.format(int(time.time()), num))
     # 保存人脸图像到指定的位置
     cv2.imwrite(img_name, image)
 
 if __name__ == '__main__':
-    catch_video("luo_zhen_zhen")
+    # catch_video("liu_jia_tai")
     # catch_video(tag="liu_jia_tai",camera_idx="F:/t3856/Pictures/Camera Roll/liu01.mp4")
+    catch_video(tag="kunkun",camera_idx="F:/t3856/Videos/984714877/1/984714877_1_0.mp4")

@@ -3,7 +3,7 @@ from PIL import Image
 import os
 import shutil
 
-INPUT_PATH = "F:\data\果蔬分类"     # 数据集路径
+INPUT_PATH = "F:\\data\\果蔬分类"     # 数据集路径
 OUTPUT_PATH = "F:\data\\trash"     # 数据集路径
 
 count=0
